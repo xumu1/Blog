@@ -89,7 +89,7 @@ DateFormat类的常用方法有：
 		        Date date = df.parse(str);
 		        System.out.println(date); // Tue Dec 11 00:00:00 CST 2018
 
-## 2.4 Calendar类
+## Calendar类
 
 ###  概念
 
