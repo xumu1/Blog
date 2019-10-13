@@ -207,8 +207,8 @@ Calendar中的getTime方法并不是获取毫秒时刻，而是拿到对应的Da
 
 # 小问题解答
 ## 小问题1：Calendar抽象类相比Date类有什么好处？
->答：根据JDK_API文档解释，Date类的API不便于实现国际化。
+>答：根据JDK_API文档解释，Date类的API不便于实现国际化。Calendar可以更方便地表示各个国家的日历或历法。
 
 ## 小问题2：Calendar抽象类中的add方法是abstract方法，那么是由哪个类为Calendar实现的？
->答：LZ暂时未知，等待填坑。
+>答：new一个calendar的时候，默认是GregorianCalendar，在GregorianCalendar中重写了add方法，也即多态的运用。
  
