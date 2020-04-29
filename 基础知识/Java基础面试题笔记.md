@@ -1,0 +1,1866 @@
+# 自我介绍
+
+我叫孙浩龙，目前就读于中国科学技术大学软件学院读硕士，本科是郑州大学，目前正在找一份Java相关的实习工作，实习时间可以从七月份开始一直持续一年。对Java、计算机网络、操作系统、数据结构都有所学习。做过一个简单的旅游项目。
+
+#     接口和抽象类的区别是什么 ？
+
+1. 接口中的所有方法隐含的都是抽象的，而抽象类则可以同时包含抽象和非抽象方法
+2. 类可以实现很多个接口，但只能继承一个抽象类
+3. 类可以不实现抽象类和接口声明的所有方法，但这种情况下，该类必须声明成抽象的。
+4. 接口中的成员函数默认是public的。抽象类的成员函数可以是private，protected或者是public。
+5. JDK8后，接口中可以包含default方法，抽象类中不可以
+
+
+
+# equals与==的区别？
+
+1. equals 比较两个实体值是否相同，可以被覆盖，但需要遵循几个约定：
+   1. 自反性：对于任何非null的引用值x, x.equals(x)必须返回true对称性：对于任何非null的引用值x和y，当y.equals(x)返回true时，x.equlas(y)必须返回true
+   2. 传递性：对于任何非null的引用值x、y、z，如果x.equals(y)返回true，并且y.equals(x)也返回true，那么x.equals(z)也必须返回true
+   3. 一致性：对于任何非null的引用值x和y，只要比较对象中的所有信息没有被修改，多次调用equals一致返回true，或者false，== 比较两个实体的引用地址是否相等，不能覆盖，如果引用地址相等，那认为两个实体为同一个实体
+
+# hashCode和equals方法的区别与联系：
+
+**一、hashCode()和equals()是什么？**
+
+​	hashCode()方法和equals()方法的作用其实一样，在Java里都是用来对比两个对象是否相等一致。
+
+**二、hashCode()和equals()的区别下边从两个角度介绍了他们的区别：一个是性能，一个是可靠性。他们之间的主要区别也基本体现在这里。**
+
+1. equals()既然已经能实现对比的功能了，为什么还要hashCode()呢？因为重写的equals（）里一般比较的比较全面比较复杂，这样效率就比较低，而利用hashCode()进行对比，则只要生成一个hash值进行比较就可以了，效率很高。
+2. hashCode()既然效率这么高为什么还要equals()呢？因为hashCode()并不是完全可靠，有时候不同的对象他们生成的hashcode也会一样（生成hash值得公式可能存在的问题），所以hashCode()只能说是大部分时候可靠，并不是绝对可靠，所以我们可以得出（PS：以下两条结论是重点，很多人面试的时候都说不出来）：
+
+> equals()相等的两个对象他们的hashCode()肯定相等，也就是用equals()对比是绝对可靠的。
+>
+> hashCode()相等的两个对象他们的equals()不一定相等，也就是hashCode()不是绝对可靠的。
+
+**三、hashCode()和equals()使用的注意事项**
+
+1. 对于需要大量并且快速的对比的话如果都用equals()去做显然效率太低，所以解决方式是，每当需要对比的时候，首先用hashCode()去对比，如果hashCode()不一样，则表示这两个对象肯定不相等（也就是不必再用equals()去再对比了）,如果hashCode()相同，此时再对比他们的equals()，如果equals()也相同，则表示这两个对象是真的相同了，这样既能大大提高了效率也保证了对比的绝对正确性！
+2. 这种大量的并且快速的对象对比一般使用的hash容器中，比如HashSet,HashMap,HashTable等等，比如HashSet里要求对象不能重复，则他内部必然要对添加进去的每个对象进行对比，而他的对比规则就是像上面说的那样，先hashCode()，如果hashCode()相同，再用equals()验证，如果hashCode()都不同，则肯定不同，这样对比的效率就很高了。
+3. 然而hashCode()和equals()一样都是基本类Object里的方法，而和equals()一样，Object里hashCode()里面只是返回当前对象的地址，如果是这样的话，那么我们相同的一个类，new两个对象，由于他们在内存里的地址不同，则他们的hashCode（）不同，所以这显然不是我们想要的，所以我们必须重写我们类的hashCode()方法，即一个类，在hashCode()里面返回唯一的一个hash值，由于标识这个类的是他的内部的变量num和name,所以我们就根据他们返回一个hash值，作为这个类的唯一hash值。所以如果我们的对象要想放进hashSet，并且发挥hashSet的特性（即不包含一样的对象），则我们就要重写我们类的hashCode()和equals()方法了。像String,Integer等这种类内部都已经重写了这两个方法。当然如果我们只是平时想对比两个对象 是否一致，则只重写一个equals()，然后利用equals()去对比也行的。
+
+**四、扩展**
+
+1. 阿里巴巴开发规范明确规定：![img](file:///C:/Users/Lenovo/AppData/Local/Temp/enhtmlclip/Image(3).png)   
+
+```
+1. 只要重写 equals，就必须重写 hashCode；
+2.因为 Set 存储的是不重复的对象，依据 hashCode 和 equals 进行判断，所以 Set 存储的对象必须重写这两个方法
+3.如果自定义对象做为 Map 的键，那么必须重写 hashCode 和 equals
+4.String 重写了 hashCode 和 equals 方法，所以我们可以非常愉快地使用 String 对象作为 key 来使用；
+```
+
+2. 什么时候需要重写？一般的地方不需要重载hashCode，只有当类需要放在HashTable、HashMap、HashSet等等hash结构的集合时才会重载hashCode。
+
+3. 那么为什么要重载hashCode呢？如果你重写了equals，比如说是基于对象的内容实现的，而保留hashCode的实现不变，那么很可能某两个对象明明是"相等”，而hashCode却不一样。这样，当你用其中的一个作为键保存到hashMap、hasoTable或hashSet中，再以“相等的"找另一个作为键值去查找他们的时候，则根本找不到。
+
+4. 为什么equals()相等，hashCode就一定要相等，而hashCode相等，却不要求equals相等?因为是按照hashCode来访问小内存块，所以hashCode必须相等。HashMap获取一个对象是比较key的hashCode相等和equals为true。之所以hashCode相等，却可以equal不等，就比如ObjectA和ObjectB他们都有属性name，那么hashCode都以name计算，所以hashCode一样，但是两个对象属于不同类型，所以equals为false。
+
+5. 为什么需要hashCode?通过hashCode可以很快的查到小内存块。通过hashCode比较比equals方法快，当get时先比较hashCode，如果hashCode不同，直接返回false。
+
+   
+
+# 什么是Java序列化和反序列化，如何实现Java序列化？或者请解释Serializable 接口的作用？
+
+https://www.jianshu.com/p/89c2a19772e2
+
+**一、序列化和反序列化的概念**
+
+**把对象转换为字节序列的过程称为对象的序列化**。
+
+**把字节序列恢复为对象的过程称为对象的反序列化**。
+
+对象的序列化主要有两种用途：
+
+1） 把对象的字节序列永久地保存到硬盘上，通常存放在一个文件中；
+
+2） 在网络上传送对象的字节序列。
+
+**二、什么场景会涉及序列化和反序列化的概念**
+
+在很多应用中，需要对某些对象进行序列化，让它们离开内存空间，入住物理硬盘，以便长期保存。比如最常见的是Web服务器中的Session对象，当有 10万用户并发访问，就有可能出现10万个Session对象，内存可能吃不消，于是Web容器就会把一些session先序列化到硬盘中，等要用了，再把保存在硬盘中的对象还原到内存中。
+
+　　当两个进程在进行远程通信时，彼此可以发送各种类型的数据。无论是何种类型的数据，都会以二进制序列的形式在网络上传送。发送方需要把这个Java对象转换为字节序列，才能在网络上传送；接收方则需要把字节序列再恢复为Java对象。
+
+​    **举个真实的案例：当我们需要使用的对象很复杂或者需要很长时间去构造，这时就会引入使用代理模式(Proxy)。例如：如果构建一个对象很耗费时间和计算机资源，代理模式(Proxy)允许我们控制这种情况，直到我们需要使用实际的对象。一个代理(Proxy)通常包含和将要使用的对象同样的方法，一旦开始使用这个对象，这些方法将通过代理(Proxy)传递给实际的对象。** 
+
+解读：在微服务化盛行的今天，很多复杂的对象构造起来比较耗时，为了节省开支，某些公司将这部分复杂的对象先圈起来，写成服务起在远端B,并在调用端A端以代理（Proxy）的形式提供对服务的访问，这期间从B到A远程调的过程形成了Java对象序列化和反序列化的相关操作！
+
+为了突出Java序列化和反序列化的强大，我们先来看一下设计模式中经常提到的**远程代理（代理模式）；**
+
+**三、什么是远程代理(Proxy)**
+
+![image-20200326135220649](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200326135220649.png)
+
+JDK提供了个代理类：**import java.lang.reflect.Proxy; 来看一下Proxy的实现**
+
+Proxy在JDK中实现了Serializable（序列化）接口，但是代理是怎么实现将**服务端**的对象运行到**客户端**上的呢？ 在这里需要先解释一个个人理解的过程：
+
+**第一步：远端**JVM（服务端）对“对象”使用**序列化后**通过网络传输的方式将对象的字节序列发送到**本地（客户端）**，
+
+**第二步：本地**代理（Proxy）将接收到的字节序列再通过反序列化恢复成”对象”，并使这个"对象"活在本地的JVM中；
+
+从上面两步来看，序列化的过程是在服务端做的；反序列化是在客户端做的；那么有个问题来了，从源码上看，Proxy（本地）实现了反序列化，服务端在哪里实现了序列化呢？带着这个问题，继续查看了服务端所有的代码，发现有的公司直接在实体上Serialize，有的则在类上加@Serializable注解利用切面实现，但终究实现了序列化；
+
+**四、JDK类库中的序列化API**
+
+java.io.ObjectOutputStream代表对象输出流，它的writeObject(Object obj)方法可对参数指定的obj对象进行序列化，把得到的字节序列写到一个目标输出流中。
+
+java.io.ObjectInputStream代表对象输入流，它的readObject()方法从一个源输入流中读取字节序列，再把它们反序列化为一个对象，并将其返回。
+
+　　只有实现了Serializable和Externalizable接口的类的对象才能被序列化。Externalizable接口继承自 Serializable接口，实现Externalizable接口的类完全由自身来控制序列化的行为，而仅实现Serializable接口的类可以 采用默认的序列化方式 。
+
+　　对象序列化包括如下步骤：
+
+　　1） 创建一个对象输出流，它可以包装一个其他类型的目标输出流，如文件输出流；
+
+　　2） 通过对象输出流的writeObject()方法写对象。
+
+　　对象反序列化的步骤如下：
+
+　　1） 创建一个对象输入流，它可以包装一个其他类型的源输入流，如文件输入流；
+
+　　2） 通过对象输入流的readObject()方法读取对象。
+
+**五、对象序列化和反序列范例：**
+
+1）定义一个Person类，实现Serializable接口
+
+![image-20200326135342988](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200326135342988.png)
+
+ 2）序列化和反序列化Person类对象
+
+![image-20200326135353573](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200326135353573.png)
+
+3）代码运行结果如下：
+
+![image-20200326135401292](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200326135401292.png)
+
+**未完待续请看原链接**
+
+# 请列举你所知道的Object类的方法并简要说明
+
+Object()默认构造方法
+
+clone()创建并返回此对象的一个副本
+
+equals(Object obj) 当前对象是否与obj对象相同
+
+finalize()当垃圾收集器确定该对象可以回收时，由垃圾收集器调用此方法
+
+getClass返回一个对象的运行时类
+
+hashCode()返回该对象的哈希码值
+
+notify()唤醒此对象监视器上等待的单个线程
+
+notifyAll()唤醒在此对象监视器上等待的所有线程
+
+toString()返回该对象的字符串表示
+
+wait()使当前线程等待，直到其他线程调用此对象的notify()或者notifyAll()方法
+
+wait(long timeout)导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量。
+
+wait(long timeout, int nanos) 导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者其他某个线程中断当前线程，或者已超过某个实际时间量。
+
+# HashMap中的key可以是任何对象或数据类型吗
+
+可以是null，但不能是可变对象，如果是可变对象，对象中的属性改变，则对象的HashCode也相应改变，导致下次无法查找到已存在Map中的数据如果要可变对象当着键，必须保证其HashCode在成员属性改变的时候保持不变
+
+# HashMap 初始容量 计算方法
+
+如果在new  HashMap的时候，没有指定初始initialCapacity，则初始initialCapacity为16，负载因子为0.75，下次扩容阈值为 16*0.75=12，这个初始容量 不一定等于初始化完成后底层数组实际的容量，因为存在阈值的计算，方法如下；也不是初始容量是多少开始就能存多少个元素，因为存在负载因子，在底层数组还没满的时候就会进行扩容。
+
+阈值计算方法为：
+
+```java
+static final int tableSizeFor(int cap) { 
+    int n = cap - 1; 
+    n |= n >>> 1;
+    n |= n >>> 2;
+    n |= n >>> 4; 
+    n |= n >>> 8;
+    n |= n >>> 16; 
+    return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1; 
+}
+```
+
+该方法计算大于等于输入参数并最接近参数的2的整数次幂的数，如10，返回16，cap -1是为了在计算的时候能得到大于等于输入参数的值在HashMap 进行put方法的时候，如果判断已有的元素大于 阈值就会触发扩容计算，扩容步骤
+
+```java
+final Node<K,V>[] resize() {
+        //原table数组赋值
+        Node<K,V>[] oldTab = table;
+        //如果原数组为null，那么原数组长度为0
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        //赋值阈值
+        int oldThr = threshold;
+        //newCap 新数组长度
+        //newThr 下次扩容的阈值
+        int newCap, newThr = 0;
+        // 1. 如果原数组长度大于0
+        if (oldCap > 0) {
+            //如果大于最大长度1 << 30 = 1073741824，那么阈值赋值为Integer.MAX_VALUE后直接返回
+            if (oldCap >= MAXIMUM_CAPACITY) {
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            }
+            // 2. 如果原数组长度的2倍小于最大长度，并且原数组长度大于默认长度16，那么新阈值为原阈值的2倍
+            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+                     oldCap >= DEFAULT_INITIAL_CAPACITY)
+                newThr = oldThr << 1; // double threshold
+        }
+        // 3. 如果原数组长度等于0，但原阈值大于0，那么新的数组长度赋值为原阈值大小
+        else if (oldThr > 0) // initial capacity was placed in threshold
+            newCap = oldThr;
+        else {               // zero initial threshold signifies using defaults
+            // 4. 如果原数组长度为0，阈值为0，那么新数组长度，新阈值都初始化为默认值
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+        }
+        // 5.如果新的阈值等于0
+        if (newThr == 0) {
+            //计算临时阈值
+            float ft = (float)newCap * loadFactor;
+            //新数组长度小于最大长度，临时阈值也小于最大长度，新阈值为临时阈值，否则是Integer.MAX_VALUE
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+                      (int)ft : Integer.MAX_VALUE);
+        }
+        //计算出来的新阈值赋值给对象的阈值
+        threshold = newThr;
+        @SuppressWarnings({"rawtypes","unchecked"})
+        //用新计算的数组长度新建一个Node数组，并赋值给对象的table
+            Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+        table = newTab;
+        //后面是copy数组和链表数据逻辑
+        if (oldTab != null) {
+            for (int j = 0; j < oldCap; ++j) {
+                Node<K,V> e;
+                if ((e = oldTab[j]) != null) {
+                    oldTab[j] = null;
+                    if (e.next == null)
+                        newTab[e.hash & (newCap - 1)] = e;
+                    else if (e instanceof TreeNode)
+                        ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                    else { // preserve order
+                        Node<K,V> loHead = null, loTail = null;
+                        Node<K,V> hiHead = null, hiTail = null;
+                        Node<K,V> next;
+                        do {
+                            next = e.next;
+                            if ((e.hash & oldCap) == 0) {
+                                if (loTail == null)
+                                    loHead = e;
+                                else
+                                    loTail.next = e;
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+                        } while ((e = next) != null);
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                    }
+                }
+            }
+        }
+        return newTab;
+    }
+```
+
+**面试回答要素**
+
+1. 回答什么情况下会第一扩容，举例说明，新数组大小，阈值大小
+2. 以后什么情况下会再次扩容，这次是怎么计算新数组大小，及阈值大小的
+
+![image-20200324133340689](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200324133340689.png)
+
+## HashMap、ConcurrentHashMap初始化阈值为什么要是8，才转为红黑树？
+
+当初始阈值为8时，链表的长度达到8的概率变的很小，如果再大概率减小的并不明显树结构查找的时间复杂度是O(log(n))，而链表的时间复杂度是O(n)，当阈值为8时，long8 = 3，相比链表更快，但树结构比链表占用的空间更多，所以这是一种时间和空间的平衡
+
+## HashMap 为什么不用平衡树，而用红黑树
+
+红黑树也是一种平衡树，但不是严格平衡，平衡树是左右子树高度差不超过1，红黑树可以是2倍红黑树在插入、删除的时候旋转的概率比平衡树低很多，效率比平衡树高查找时间复杂度都维持在O(logN)
+
+**关于HashMap的其他文章：https://blog.csdn.net/login_sonata/article/details/76598675**
+
+
+
+# 常见异常分为哪两种（Exception,Error），区别是什么，了解受检异常和非受检异常吗
+
+Exception,Error有共同的父类Throwable，Error: 表示程序发生错误，是程序无法处理的，不可恢复的，如OutOfMemoryError，Exception: 表示程序可处理的异常，又分为CheckedException（受检异常）、UncheckedException(非受检异常)，受检异常发生在编译期，必须要使用try...catch 或者 throws捕获或者抛出异常，否则编译不通过；非受检异常发生在运行期，具有不确定性，主要由程序的逻辑问题引起的，在程序设计的时候要认真考虑，尽量处理异常
+
+# 说一说volatile
+
+**引用https://cloud.tencent.com/developer/news/300554**
+
+**1：什么时候出现线程安全的问题？**
+
+在并发编程中，多线程同时并发访问的资源叫做临界资源，当多个线程同时访问对象并要求操作相同资源时，分割了原子操作就有可能出现数据的不一致或者数据不完整的情况，就可能会 产生线程安全问题。
+
+共享资源可以是：一个对象，对象中的属性，一个文件，一个数据库等。
+
+不过当多个线程执行一个方法，方法内部的局部变量并不是临界资源，因为方法是在栈上执行的，而java栈是线程私有的，因此不会产生线程安全问题。
+
+注：线程可以拥有自己的堆栈，自己的程序计数器和自己的局部变量，但不在拥有系统资源，它与父进程的其他线程共享该进程所拥有的全部资源。
+
+线程共享的环境包括：进程代码段，进程的公有数据等。利用这些共享的数据等，线程很容易实现相互之间的通信。
+
+**2：如何解决线程安全问题？**
+
+那么一般来说，是如何解决线程安全问题的呢？
+
+基本上所有的并发模式在解决线程安全问题时，都采用“序列化访问临界资源”的方案，即在同一时刻，只能有一个线程访问临界资源，也称作同步互斥访问。
+
+通常来说，是在访问临界资源的代码前面加上一个锁，当访问完临界资源后释放锁，让其他线程继续访问。
+
+**在java中，提供了两种方式来实现同步互斥访问：synchronized和Lock。**
+
+采用synchronized修饰符实现的同步机制叫做互斥锁机制，它所获得的锁叫做互斥锁。每个对象都有一个monitor(锁标记)，当线程拥有这个锁标记时才能访问这个资源，没有锁标记便进入锁池。任何一个对象系统都会为其创建一个互斥锁，这个锁是为了分配给线程的，防止打断原子操作。每个对象的锁只能分配给一个线程，因此叫做互斥锁。
+
+举个简单的例子：如果对临界资源加上互斥锁，当一个线程在访问该临界资源时，其他线程便只能等待。在Java中，每一个对象都拥有一个锁标记（monitor），也称为监视器，多线程同时访问某个对象时，线程只有获取了该对象的锁才能访问。
+
+在Java中，可以使用synchronized关键字来标记一个方法或者代码块，当某个线程调用该对象的synchronized方法或者访问synchronized代码块时，这个线程便获得了该对象的锁，其他线程暂时无法访问这个方法，只有等待这个方法执行完毕或者代码块执行完毕，这个线程才会释放该对象的锁，其他线程才能执行这个方法或者代码块。
+
+synchronized是Java中的关键字，是一种同步锁。它修饰的对象有以下几种：
+
+1) 修饰一个代码块，被修饰的代码块称为同步语句块，其作用的范围是大括号{}括起来的代码，作用的对象是调用这个代码块的对象；
+
+2) 修饰一个方法，被修饰的方法称为同步方法，其作用的范围是整个方法，作用的对象是调用这个方法的对象；
+
+3) 修改一个静态的方法，其作用的范围是整个静态方法，作用的对象是这个类的所有对象；
+
+4)修改一个类，其作用的范围是synchronized后面括号括起来的部分，作用主的对象是这个类的所有对象。
+
+**3：并发编程的三个核心概念：原子性、可见性、有序性。**
+
+原子性：即一个操作或者多个操作 要么全部执行并且执行的过程不会被任何因素打断，要么就都不执行。
+
+可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。
+
+有序性：即程序执行的顺序按照代码的先后顺序执行。
+
+**4:Java中Volatile底层原理**
+
+1. Java提供了volatile来保证可见性。
+
+2. 防止指令重排
+
+   
+
+当一个变量被volatile修饰后，表示着线程本地内存无效，当一个线程修改共享变量后他会立即被更新到主内存中，当其他线程读取共享变量时，它会直接从主内存中读取。 当然，synchronize和锁都可以保证可见性。
+
+
+
+计算机在运行程序时，每条指令都是在CPU中执行的，在执行过程中势必会涉及到数据的读写。我们知道程序运行的数据是存储在主存中，这时就会有一个问题，读写主存中的数据没有CPU中执行指令的速度快，如果任何的交互都需要与主存打交道则会大大影响效率，所以就有了CPU高速缓存。CPU高速缓存为某个CPU独有，只与在该CPU运行的线程有关。有了CPU高速缓存虽然解决了效率问题，但是它会带来一个新的问题：数据一致性。在程序运行中，会将运行所需要的
+
+数据复制一份到CPU高速缓存中，在进行运算时CPU不再也主存打交道，而是直接从高速缓存中读写数据，只有当运行结束后才会将数据刷新到主存中。举一个简单的例子：
+
+i++i++
+
+当线程运行这段代码时，首先会从主存中读取i( i = 1)，然后复制一份到CPU高速缓存中，然后CPU执行 + 1 （2）的操作，然后将数据（2）写入到告诉缓存中，最后刷新到主存中。其实这样做在单线程中是没有问题的，有问题的是在多线程中。如下：假如有两个线程A、B都执行这个操作（i++），按照我们正常的逻辑思维主存中的i值应该=3，但事实是这样么？分析如下：
+
+两个线程从主存中读取i的值（1）到各自的高速缓存中，然后线程A执行+1操作并将结果写入高速缓存中，最后写入主存中，此时主存i==2,线程B做同样的操作，主存中的i仍然=2。所以最终结果为2并不是3。这种现象就是缓存一致性问题。
+
+
+
+![image-20200324153346254](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200324153346254.png)
+
+解决缓存一致性方案有两种：
+
+通过在总线加LOCK#锁的方式
+
+通过缓存一致性协议
+
+但是方案1存在一个问题，它是采用一种独占的方式来实现的，即总线加LOCK#锁的话，只能有一个CPU能够运行，其他CPU都得阻塞，效率较为低下。
+
+第二种方案，缓存一致性协议（MESI协议）它确保每个缓存中使用的共享变量的副本是一致的。其核心思想如下：当某个CPU在写数据时，如果发现操作的变量是共享变量，则会通知其他CPU告知该变量的缓存行是无效的，因此其他CPU在读取该变量时，发现其无效会重新从主存中加载数据。
+
+java语言提供了Violatile来确保多处理开发中，共享变量的“可见性”，即当另外一个线程修改一个共享变量时，另外一个线程能读到这个修改的值。它是轻量级的synchronized，不会引起线程上下文的切换和调度，执行开销更小。使用Violatile修饰的变量在汇编阶段，会多出一条lock前缀指令，它在多核处理器下回引发两件事情：
+
+1: 将当前处理器缓存行的数据写回到系统内存
+
+2: 这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。
+
+通常处理器和内存之间都有几级缓存来提高处理速度，处理器先将内存中的数据读取到内部缓存后再进行操作，但是对于缓存写会内存的时机则无法得知，因此在一个处理器里修改的变量值，不一定能及时写会缓存，这种变量修改对其他处理器变得“不可见”了。但是，使用Volatile修饰的变量，在写操作的时候，会强制将这个变量所在缓存行的数据写回到内存中，但即使写回到内存，其他处理器也有可能使用内部的缓存数据，从而导致变量不一致，所以，在多处理器下，为了保证各个处理器的缓存是一致的，就会实现缓存一致性协议，每个处理器通过嗅探在总线上传播的数据来检查自己缓存的值是不是过期，如果过期，就会将该缓存行设置成无效状态，下次要使用就会重新从内存中读取。
+
+# JDK1.8新特性
+
+1. 函数式接口
+
+   函数式接口在Java中是指：有且仅有一个抽象方法的接口。
+
+2. 使用Lambda函数式编程
+
+   1. Lambda表达式和匿名内部类的区别
+      所需类型不同
+      　　●匿名内部类:可以是接口，也可以是抽象类，还可以是具体类
+      　　●Lambda表达式:只能是接口
+      使用限制不同
+      　　●如果接口中有且仅有一一个抽象方法，可以使用L ambda表达式,也可以使用匿名内部类
+      　　●如果接口中多 于一个抽象方法，只能使用匿名内部类，而不能使用L ambda表达式
+      实现原理不同
+      　　●匿名内部类:编译之后，产生-一个单独的.class字节码文件
+      　　●Lambda表达式:编译后，没有一个单独的.class字节码文件。对应的字节码会在运行的时候动态生成 
+
+3. 流的应用
+
+4. 方法引用
+
+
+
+# 进程和线程的区别
+
+**根本区别**：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位
+
+**在开销方面：**每个进程都有独立的代码和数据空间（程序上下文），程序之间的切换会有较大的开销；线程可以看做轻量级的进程，同一类线程共享代码和数据空间，每个线程都有自己独立的运行栈和程序计数器（PC），线程之间切换的开销小。
+
+**所处环境**：在操作系统中能同时运行多个进程（程序）；而在同一个进程（程序）中有多个线程同时执行（通过CPU调度，在每个时间片中只有一个线程执行）
+
+**内存分配方面：**系统在运行的时候会为每个进程分配不同的内存空间；而对线程而言，除了CPU外，系统不会为线程分配内存（线程所使用的资源来自其所属进程的资源），线程组之间只能共享资源。
+
+**包含关系：**没有线程的进程可以看做是单线程的，如果一个进程内有多个线程，则执行过程不是一条线的，而是多条线（线程）共同完成的；线程是进程的一部分，所以线程也被称为轻权进程或者轻量级进程。
+
+# 线程的状态转换
+
+![image-20200325123148657](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200325123148657.png)
+
+
+
+- 当一个线程执行了start方法后，不代表这个线程就会立即被执行，只代表这个线程处于可运行的状态，最终由OS的线程调度来决定哪个可运行状态下的线程被执行。
+- 一个线程一次被选中执行是有时间限制的，这个时间段叫做CPU的时间片，当时间片用完但线程还没有结束时，这个线程又会变为可运行状态，等待OS的再次调度；在运行的线程里执行Thread.yeild()方法同样可以使当前线程变为可运行状态。
+- 在一个运行中的线程等待用户输入、调用Thread.sleep()、调用了其他线程的join()方法，则当前线程变为阻塞状态。
+- 阻塞状态的线程用户输入完毕、sleep时间到、join的线程结束，则当前线程由阻塞状态变为可运行状态。
+- 运行中的线程调用wait方法，此线程进入等待队列。
+- 运行中的线程遇到synchronized同时没有拿到对象的锁标记、等待队列的线程wait时间到、等待队列的线程被notify方法唤醒、有其他线程调用notifyAll方法，则线程变成锁池状态。
+- 锁池状态的线程获得对象锁标记，则线程变成可运行状态。
+- 运行中的线程run方法执行完毕或main线程结束，则线程运行结束。
+
+**线程同步各个方法的区别**
+
+- Thread.yield()当前运行的线程变成可运行状态。
+- t2.join() 使得当前线程处于阻塞状态直到t2线程执行完毕。
+- Thread.sleep()使得当前线程处于阻塞状态直到sleep的时间结束。
+- wait、notify、notifyAll方法是Object类的方法，其调用环境必须有synchronized的同步块中调用，否则会抛java.lang.IllegalMonitorStateException异常。 
+
+**线程池**
+
+​    多线程技术主要解决处理器单元内多个线程执行的问题，它可以显著减少处理器单元的闲置时间，增加处理器单元的吞吐能力。
+
+​    假设一个服务器完成一项任务所需时间为：T1 创建线程时间，T2 在线程中执行任务的时间，T3 销毁线程时间。
+
+- 如果：T1 + T3 远大于 T2，则可以采用线程池，以提高服务器性能。
+-  一个线程池包括以下四个基本组成部分：
+
+​    1、线程池管理器（ThreadPool）：用于创建并管理线程池，包括 创建线程池，销毁线程池，添加新任务；
+
+​    2、工作线程（PoolWorker）：线程池中线程，在没有任务时处于等待状态，可以循环的执行任务；
+
+​    3、任务接口（Task）：每个任务必须实现的接口，以供工作线程调度任务的执行，它规定了任务的入口，任务执行完后的收尾工作，任务的执行状态等；
+
+​     4、任务队列（taskQueue）：用于存放没有处理的任务。提供一种缓冲机制。
+
+​    线程池技术关注如何缩短或调整T1,T3时间的技术，从而提高服务器程序性能。它把T1，T3分别安排在服务器程序的启动和结束的时间段或者一些空闲的时间段，这样在服务器程序处理客户请求时，不会有T1，T3的开销了。线程池不仅调整T1,T3产生的时间段，而且它还显著减少了创建线程的数目，看一个例子：
+​    假设一个服务器一天要处理50000个请求，并且每个请求需要一个单独的线程完成。在线程池中，线程数一般是固定的，所以产生线程总数不会超过线程池中线程的数目，而如果服务器不利用线程池来处理这些请求则线程总数为50000。一般线程池大小是远小于50000。所以利用线程池的服务器程序不会为了创建50000而在处理请求时浪费时间，从而提高效率。
+
+**线程调度模型**：分时调度模型和抢占式调度模型 。JVM采用抢占式调度模型。 所谓的多线程的并发运行，其实是指宏观上看，各个线程轮流获得CPU的使用权，分别执行各自的任务。 （线程的调度不是跨平台，它不仅取决于java虚拟机，它还依赖于操作系统）
+如果希望明确地让一个线程给另外一个线程运行的机会，可以采取以下的办法之一：
+
+1、 调整各个线程的优先级
+
+2、 让处于运行状态的线程调用Thread.sleep()方法
+
+3、 让处于运行状态的线程调用Thread.yield()方法
+
+4、 让处于运行状态的线程调用另一个线程的join()方法
+
+调整各个线程的优先级 Thread类的setPriority(int)和getPriority()方法分别用来设置优先级和读取优先级。 如果希望程序能够移值到各个操作系统中，应该确保在设置线程的优先级时，只使用MAX_PRIORITY、NORM_PRIORITY、MIN_PRIORITY这3个优先级。
+线程睡眠：当线程在运行中执行了sleep()方法时，它就会放弃CPU，转到阻塞状态。
+
+ **线程让步**：当线程在运行中执行了Thread类的yield()静态方法时，如果此时具有相同优先级的其它线程处于就绪状态，那么yield()方法将把当前运行的线程放到运行池中并使另一个线程运行。如果没有相同优先级的可运行线程，则yield()方法什么也不做。
+
+>  Sleep()方法和yield()方法都是Thread类的静态方法，都会使当前处于运行状态的线程放弃CPU，把运行机会让给别的线程，两者的区别在于：
+>
+> 1. sleep()方法会给其他线程运行的机会，而不考虑其他线程的优先级，因此会给较低线程一个运行的机会；yield()方法只会给相同优先级或者更高优先级的线程一个运行的机会。
+>
+> 2. 当线程执行了sleep(long millis)方法后，将转到阻塞状态，参数millis指定睡眠时间；当线程执行了yield()方法后，将转到就绪状态。 
+>
+> 3. sleep()方法声明抛出InterruptedException异常，而yield()方法没有声明抛出任何异常
+>
+> 4. sleep()方法比yield()方法具有更好的移植性
+
+**等待其它线程的结束**：join() 当前运行的线程可以调用另一个线程的 join()方法，当前运行的线程将转到阻塞状态，直到另一个线程运行结束，它才恢复运行。
+
+**定时器Timer**:在JDK的java.util包中提供了一个实用类Timer, 它能够定时执行特定的任务。
+
+**线程的同步原子操作**：根据Java规范，对于基本类型的赋值或者返回值操作，是原子操作。但这里的基本数据类型不包括long和double, 因为JVM看到的基本存储单位是32位，而long 和double都要用64位来表示。所以无法在一个时钟周期内完成。
+
+**自增操作**（++）：不是原子操作，因为它涉及到一次读和一次写。
+
+**原子操作**：由一组相关的操作完成，这些操作可能会操纵与其它的线程共享的资源，为了保证得到正确的运算结果，一个线程在执行原子操作其间，应该采取其他的措施使得其他的线程不能操纵共享资源。
+
+**同步代码块**：为了保证每个线程能够正常执行原子操作，Java引入了同步机制，具体的做法是在代表原子操作的程序代码前加上synchronized标记，这样的代码被称为同步代码块。
+
+**同步锁**：每个JAVA对象都有且只有一个同步锁，在任何时刻，最多只允许一个线程拥有这把锁。当一个线程试图访问带有synchronized(this)标记的代码块时，必须获得 this关键字引用的对象的锁，在以下的两种情况下，当前线程有着不同的命运。 
+
+1. 假如这个锁已经被其它的线程占用，JVM就会把这个线程放到本对象的锁池中。本线程进入阻塞状态。锁池中可能有很多的线程，等到其他的线程释放了锁，JVM就会从锁池中随机取出一个线程，使这个线程拥有锁，并且转到就绪状态。 
+2. 假如这个锁没有被其他线程占用，本线程会获得这把锁，开始执行同步代码块。 （一般情况下在执行同步代码块时不会释放同步锁，但也有特殊情况会释放对象锁 如在执行同步代码块时，遇到异常而导致线程终止，锁会被释放；在执行代码块时，执行了锁所属对象的wait()方法，这个线程会释放对象锁，进入对象的等待池中）
+
+**线程同步的特征：**
+
+1、如果一个同步代码块和非同步代码块同时操作共享资源，仍然会造成对共享资源的竞争。因为当一个线程执行一个对象的同步代码块时，其他的线程仍然可以执行对象的非同步代码块。（所谓的线程之间保持同步，是指不同的线程在执行同一个对象的同步代码块时，因为要获得对象的同步锁而互相牵制）
+
+2、 每个对象都有唯一的同步锁
+
+3、 在静态方法前面可以使用synchronized修饰符。
+
+4、 当一个线程开始执行同步代码块时，并不意味着必须以不间断的方式运行，进入同步代码块的线程可以执行Thread.sleep()或者执行Thread.yield()方法，此时它并不释放对象锁，只是把运行的机会让给其他的线程。
+
+5、 Synchronized声明不会被继承，如果一个用synchronized修饰的方法被子类覆盖，那么子类中这个方法不在保持同步，除非用synchronized修饰。
+
+**线程安全的类：**
+
+   1、 这个类的对象可以同时被多个线程安全的访问。
+
+   2、 每个线程都能正常的执行原子操作，得到正确的结果。
+
+   3、 在每个线程的原子操作都完成后，对象处于逻辑上合理的状态。
+
+**释放对象的锁：**
+
+   1、 执行完同步代码块就会释放对象的锁
+
+   2、 在执行同步代码块的过程中，遇到异常而导致线程终止，锁也会被释放
+
+   3、 在执行同步代码块的过程中，执行了锁所属对象的wait()方法，这个线程会释放对象锁，进入对象的等待池。
+
+**死锁**： 当一个线程等待由另一个线程持有的锁，而后者正在等待已被第一个线程持有的锁时，就会发生死锁。JVM不监测也不试图避免这种情况，因此保证不发生死锁就成了程序员的责任。
+避免死锁 一个通用的经验法则是：当几个线程都要访问共享资源A、B、C 时，保证每个线程都按照同样的顺序去访问他们。
+
+**线程通信** ：Java.lang.Object类中提供了两个用于线程通信的方法 1、 wait():执行了该方法的线程释放对象的锁，JVM会把该线程放到对象的等待池中。该线程等待其它线程唤醒 2、 notify():执行该方法的线程唤醒在对象的等待池中等待的一个线程，JVM从对象的等待池中随机选择一个线程，把它转到对象的锁池中。
+
+# ThreadLocal与synchronized
+
+两个关键字都用来处理多线程并发访问变量的问题，不过两者处理问题的角度不同、思路不同。
+
+|        | synchronized                                                 | ThreadLocal                                                  |
+| ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 原理   | 同步机制采用‘以时间换空间’的方式，只提供一份变量，让不同的线程排队访问 | ThreadLocal采用‘以空间换时间’的方式，为每一个线程都提供一份变量额副本，从而实现同时访问而相互不干扰 |
+| 侧重点 | 多个线程之间访问资源的同步                                   | 多线程中让每个线程之间的数据相互隔离                         |
+
+有些时候虽然两种方法都可以解决问题，但是使用ThreadLocal更为合适，可以使程序拥有更高的并发性。
+
+# **同步(Synchronous)和异步(Asynchronous)**
+
+**同步**和**异步**通常用来形容一次方法调用。
+
+**同步方法**调用一旦开始，调用者必须等到方法调用返回后，才能继续后续的行为。
+
+**异步方法**调用更像一个消息传递，一旦开始，方法调用就会立即返回，调用者就可以继续后续的操作。而，异步方法通常会在另外一个线程中，“真实”地执行着。整个过程，不会阻碍调用者的工作。
+
+# volatile和synchronized区别
+
+1. volatile是变量修饰符，而synchronized则作用于一段代码或方法。
+2. volatile只是在线程内存和“主”内存间同步某个变量的值；而synchronized通过锁定和解锁某个监视器同步所有变量的值, 显然synchronized要比volatile消耗更多资源。
+3. volatile不会造成线程的阻塞；synchronized可能会造成线程的阻塞。
+4. volatile保证数据的可见性，但**不能保证原子性**；而synchronized可以保证原子性，也可以间接保证可见性，因为它会将私有内存中和公共内存中的数据做同步。
+5. volatile标记的变量不会被编译器优化；synchronized标记的变量可以被编译器优化。
+
+# MySQL的事务
+
+1. 事务的四大特征：ACID
+
+   1. 原子性：是不可分割的最小操作单位，要么同时成功，要么同时失败。
+
+   2. 持久性：当事务提交或回滚后，数据库会持久化的保存数据。
+   3. 隔离性：多个事务之间。相互独立。
+   4. 一致性：事务操作前后，数据总量不变
+
+2. 事务的隔离级别（了解）
+  * 概念：多个事务之间隔离的，相互独立的。但是如果多个事务操作同一批数据，则会引发一些问题，设置不同的隔离级别就可以解决这些问题。
+  * 存在问题：
+  	1. 脏读：一个事务，读取到另一个事务中没有提交的数据
+  	2. 不可重复读(虚读)：在同一个事务中，两次读取到的数据不一样。
+  	3. 幻读：一个事务操作(DML)数据表中所有记录，另一个事务添加了一条数据，则第一个事务查询不到自己的修改。
+  * 隔离级别：
+  	1. read uncommitted：读未提交
+  		* 产生的问题：脏读、不可重复读、幻读
+  	2. read committed：读已提交 （Oracle）
+  		* 产生的问题：不可重复读、幻读
+  	3. repeatable read：可重复读 （MySQL默认）
+  		* 产生的问题：幻读
+  	4. serializable：串行化
+  		* 可以解决所有的问题
+
+# HTTP状态码
+
+| 状态码 | 类别                             | 含义                       |
+| ------ | -------------------------------- | -------------------------- |
+| 1XX    | Informational（信息性状态码）    | 接收的请求正在处理         |
+| 2XX    | Success（成功状态码）            | 请求正常处理完毕           |
+| 3XX    | Redirection（重定向状态码）      | 需要进行附加操作以完成请求 |
+| 4XX    | Client Error（客户端错误状态码） | 服务器无法处理请求         |
+| 5XX    | Server Error（服务器错误状态码） | 服务器处理请求出错         |
+
+## 1XX 信息
+
+- **100 Continue** ：表明到目前为止都很正常，客户端可以继续发送请求或者忽略这个响应。
+
+## 2XX 成功
+
+- **200 OK**
+- **204 No Content** ：请求已经成功处理，但是返回的响应报文不包含实体的主体部分。一般在只需要从客户端往服务器发送信息，而不需要返回数据时使用。
+- **206 Partial Content** ：表示客户端进行了范围请求，响应报文包含由 Content-Range 指定范围的实体内容。
+
+## 3XX 重定向
+
+- **301 Moved Permanently** ：永久性重定向
+- **302 Found** ：临时性重定向
+- **303 See Other** ：和 302 有着相同的功能，但是 303 明确要求客户端应该采用 GET 方法获取资源。
+- 注：虽然 HTTP 协议规定 301、302 状态下重定向时不允许把 POST 方法改成 GET 方法，但是大多数浏览器都会在 301、302 和 303 状态下的重定向把 POST 方法改成 GET 方法。
+- **304 Not Modified** ：如果请求报文首部包含一些条件，例如：If-Match，If-Modified-Since，If-None-Match，If-Range，If-Unmodified-Since，如果不满足条件，则服务器会返回 304 状态码。
+- **307 Temporary Redirect** ：临时重定向，与 302 的含义类似，但是 307 要求浏览器不会把重定向请求的 POST 方法改成 GET 方法。
+
+## 4XX 客户端错误
+
+- **400 Bad Request** ：请求报文中存在语法错误。
+- **401 Unauthorized** ：该状态码表示发送的请求需要有认证信息（BASIC 认证、DIGEST 认证）。如果之前已进行过一次请求，则表示用户认证失败。
+- **403 Forbidden** ：请求被拒绝。
+- **404 Not Found**
+
+## 5XX 服务器错误
+
+- **500 Internal Server Error** ：服务器正在执行请求时发生错误。
+- **503 Service Unavailable** ：服务器暂时处于超负载或正在进行停机维护，现在无法处理请求。
+
+# 线程start方法和run方法
+
+- **start：**通过调用Thread类的 start()方法来启动一个线程，这时此线程处于就绪（可运行）状态，并没有运行，一旦得到cpu时间片，就开始执行run()方法
+
+- **run：**run()方法只是类的一个普通方法而已，如果直接调用run方法，程序中依然只有主线程这一个线程，其程序执行路径还是只有一条，还是要顺序执行，还是要等待run方法体执行完毕后才可继续执行下面的代码，这样就没有达到写线程的目的。
+
+调用start方法方可启动线程，而run方法只是thread类中的一个普通方法调用，还是在主线程里执行。
+
+# 二叉树、B树、B+树、平衡二叉树
+
+###  **二叉树** 
+
+是每个结点最多有两个子树的树结构。
+
+### **平衡二叉树**：
+
+是基于二分法的策略提高数据的查找速度的二叉树的数据结构。
+
+> 总结平衡二叉树特点：
+>
+> （1）非叶子节点最多拥有两个子节点；
+>
+> （2）非叶子节值大于左边子节点、小于右边子节点；
+>
+> （3）树的左右两边的层级数相差不会大于1;
+>
+> （4）没有值相等重复的节点;
+
+### **B树：**
+
+B树和平衡二叉树稍有不同的是B树属于多叉树又名平衡多路查找树（查找路径不只两个），数据库索引技术里大量使用者B树和B+树的数据结构，让我们来看看他有什么特点;
+
+> - **规则：**
+>
+> （1）排序方式：所有节点关键字是按递增次序排列，并遵循左小右大原则；
+>
+> （2）子节点数：非叶节点的子节点数>1，且<=M ，且M>=2，空树除外（注：M阶代表一个树节点最多有多少个查找路径，M=M路,当M=2则是2叉树,M=3则是3叉）；
+>
+> （3）关键字数：枝节点的关键字数量大于等于ceil(m/2)-1个且小于等于M-1个（注：ceil()是个朝正无穷方向取整的函数 如ceil(1.1)结果为2);
+>
+> （4）所有叶子节点均在同一层、叶子节点除了包含了关键字和关键字记录的指针外也有指向其子节点的指针只不过其指针地址都为null对应下图最后一层节点的空格子;
+
+![image-20200406221827647](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200406221827647.png)
+
+### **B+树**：
+
+是B树的一个升级版，相对于B树来说B+树更充分的利用了节点的空间，让查询速度更加稳定，其速度完全接近于二分法查找。为什么说B+树查找的效率要比B树更高、更稳定；我们先看看两者的区别
+
+> - **规则**
+>
+> （1）B+跟B树不同B+树的**非叶子**节点不保存关键字记录的指针，只进行数据索引，这样使得B+树每个**非叶子**节点所能保存的关键字大大增加；
+>
+> （2）B+树**叶子**节点保存了父节点的所有关键字记录的指针，所有数据地址必须要到叶子节点才能获取到。所以每次数据查询的次数都一样；
+>
+> （3）B+树叶子节点的关键字从小到大有序排列，左边结尾数据都会保存右边节点开始数据的指针。
+>
+> （4）非叶子节点的子节点数=关键字数（来源百度百科）（根据各种资料 这里有两种算法的实现方式，另一种为非叶节点的关键字数=子节点数-1（来源维基百科)，虽然他们数据排列结构不一样，但其原理还是一样的MySQL 的B+树是用第一种方式实现）;
+
+> - **特点**
+>
+> 1、B+**树的层级更少**：相较于B树B+每个**非叶子**节点存储的关键字数更多，树的层级更少所以查询数据更快；
+>
+> 2、B+**树查询速度更稳定**：B+所有关键字数据地址都存在**叶子**节点上，所以每次查找的次数都相同所以查询速度要比B树更稳定;
+>
+> 3、B+**树天然具备排序功能：**B+树所有的**叶子**节点数据构成了一个有序链表，在查询大小区间的数据时候更方便，数据紧密性很高，缓存的命中率也会比B树高。
+>
+> 4、B+**树全节点遍历更快：**B+树遍历整棵树只需要遍历所有的**叶子**节点即可，，而不需要像B树一样需要对每一层进行遍历，这有利于数据库做全表扫描。
+>
+> **B树**相对于**B+树**的优点是，如果经常访问的数据离根节点很近，而**B树**的**非叶子**节点本身存有关键字其数据的地址，所以这种数据检索的时候会要比**B+树**快。
+
+![image-20200406221803150](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200406221803150.png)
+
+
+
+# 单例模式
+
+- 手写单例模式
+- 线程安全的单例模式
+
+jdk 
+
+
+
+## 什么是单例
+
+单例类是在整个程序中只能有一个的实例，这个类负责创建自己的对象，并确保只有一个对象被创建。
+
+
+
+## 代码实现要点
+
+- 私有构造器
+- 持有该类的属性
+- 对外提供获取实例的静态方法
+
+## 常见单例模式
+
+饿汉式：线程安全、反射不安全、反序列化不安全（可通过手段解决）
+
+登记式：线程安全、防止反射攻击、反序列化不安全（可通过手段解决）
+
+枚举式：线程安全、防止反射攻击、反序列化安全、支持序列化
+
+懒汉式：线程不安全（可通过锁改善）、延迟加载、（两种同步方式、效率低）
+
+双检锁：线程安全、volatile
+
+> instance = new Singleton会执行如下操作：
+>
+> 1.分配对象内存空间
+>
+> 2.初始化对象
+>
+> 3.instance指向1中分配的空间
+>
+> 在某些编译器上，可能会出现指令重排：
+>
+> 1.分配对象内存空间
+>
+> 2.instance指向1中分配的空间（此时还未初始化）
+>
+> 3.初始化对象
+>
+> 为了防止指令重排造成的线程之间重复创建对象的问题，使用volatile关键字
+
+ThreadLocal：不加锁，以空间换时间，为每个线程提供变量的独立副本，可以保证各自线程中是单例，但是不同线程之间不保证
+
+CAS：无锁乐观策略，线程安全
+
+
+
+### 饿汉式
+
+```java
+/**
+ * 功能描述：饿汉式单例模式
+ * @Author: xumu
+ * @Date: 2020-3-20 23:45
+ */
+public class Singleton1 {
+    //私有构造方法
+    private Singleton1(){}
+    //持有该类的属性
+    //在加载进内存的时候就会调用静态方法生成instance
+    //即立即加载
+    private static Singleton1 instance = new Singleton1();
+    //对外提供的静态方法
+    public static Singleton1 getInstance(){
+        return instance;
+    }
+    //解决反序列化问题
+    private Object readResolve(){
+        return instance;
+    }
+}
+```
+
+### 登记式
+
+```java
+/**
+ * 功能描述：登记式
+ *
+ * @Author: xumu
+ * @Date: 2020-3-20 23:51
+ */
+public class Singleton2 {
+    //私有构造方法,解决暴力反射创建多个对象的问题
+    private Singleton2(){
+        if(SingletonHoolder.instance != null)
+            throw new IllegalStateException();
+    }
+    //使用内部类来延迟加载instance对象，还可以利用延迟加载特性解决被暴力反射的问题
+    private static class SingletonHoolder{
+        private static Singleton2 instance = new Singleton2();
+    }
+    //给外部提供的获取instance的方法
+    public static Singleton2 getInstance(){
+        return SingletonHoolder.instance;
+    }
+    //解决反序列化问题
+    private Object readResolve(){
+        return SingletonHoolder.instance;
+    }
+}
+```
+
+### 枚举式
+
+```java
+/**
+ * 功能描述：
+ * 缺点：如果用到继承的特性的话，枚举就不太合适
+ * @Author: xumu
+ * @Date: 2020-3-21 0:01
+ */
+public enum Singleton3 {
+    //相当于全局的单例对象
+    INSTANCE{
+        @Override
+        protected void doSomething() {
+            System.out.println("doSomething");
+        }
+    };
+    //单例对象定义的方法
+    protected abstract void doSomething();
+}
+```
+
+### 懒汉式
+
+```java
+/**
+ * 功能描述：
+ *
+ * @Author: xumu
+ * @Date: 2020-3-21 0:06
+ */
+public class Singleton4 {
+    //构造方法
+    private Singleton4(){}
+    //私有静态成员对象
+    private static Singleton4 instance = null;
+    //共有静态方法
+    public static Singleton4 getInstance(){
+        //加锁使其线程安全
+        //第一种加锁方式
+        synchronized (Singleton4.class) {
+            if (instance == null) {
+                instance = new Singleton4();
+            }
+        }
+        return instance;
+    }
+}
+```
+
+```java
+/**
+ * 功能描述：
+ *
+ * @Author: xumu
+ * @Date: 2020-3-21 0:06
+ */
+public class Singleton4 {
+    //构造方法
+    private Singleton4(){}
+    //私有静态成员对象
+    private static Singleton4 instance = null;
+    //共有静态方法
+    public static synchronized Singleton4 getInstance(){
+        //加锁使其线程安全
+        //第二种加锁方式，在方法上加上synchronized关键字
+            if (instance == null) {
+                instance = new Singleton4();
+            }
+        return instance;
+    }
+}
+```
+
+
+
+> 两种加锁方式对性能的影响都非常大，所以提出第三种加锁方式，也就是下面的双检锁方式。
+
+
+
+###  双检锁
+
+```java
+/**
+ * 功能描述：
+ *
+ * @Author: xumu
+ * @Date: 2020-3-21 0:06
+ */
+public class Singleton4 {
+    //构造方法
+    private Singleton4(){}
+    //私有静态成员对象
+    private static volatile Singleton4 instance = null;
+    //共有静态方法
+    public static synchronized Singleton4 getInstance(){
+        if (instance == null) {
+            //只需要在第一次初始化的时候使用同步代码块，提高了程序的效率
+            synchronized (Singleton4.class) {
+                if (instance == null) {
+                    instance = new Singleton4();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+> 双检锁不能保证多线程程序100%不出现问题，因为
+>
+> instance = new Singleton会执行如下操作：
+>
+> ​	1.分配对象内存空间
+>
+> ​	2.初始化对象
+>
+> ​	3.instance指向1中分配的空间
+>
+> 在某些编译器上，可能会出现指令重排：
+>
+> ​	1.分配对象内存空间
+>
+> ​	2.instance指向1中分配的空间（此时还未初始化）
+>
+> ​	3.初始化对象
+>
+> 此时就可能造成线程A走到指令第二步，线程B此时可以获取锁，并且判断instance==null，从而也创建出一个新的Singleton对象，造成单例边多例
+>
+> 为了防止指令重排造成的线程之间重复创建对象的问题，使用volatile关键字，指定对instance变量的操作不进行指令重排。
+
+<img src="C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200321002319221.png" alt="image-20200321002319221" style="zoom:70%;" />
+
+###  ThreadLocal
+
+```JAVA
+/**
+ * 功能描述：
+ *
+ * @Author: xumu
+ * @Date: 2020-3-21 0:06
+ */
+public class Singleton5 {
+    //构造方法
+    private Singleton5() {
+    }
+    //私有静态成员对象
+    private static Singleton5 instance = null;
+    //使用ThreadLocal对象
+    public static final ThreadLocal<Singleton5> threadLocal=new ThreadLocal<Singleton5>(){
+        @Override
+        protected Singleton5 initialValue() {
+            return new Singleton5();
+        }
+    };
+    //静态公共方法提供instance
+    public static Singleton5 getInstance(){
+        return threadLocal.get();
+    }
+}
+```
+
+> 在独立的线程里面获取的是单例的，在不同线程中获取的是不同的。
+
+
+
+### CAS
+
+```java
+/**
+ * 功能描述：
+ *
+ * @Author: xumu
+ * @Date: 2020-3-21 0:06
+ */
+public class Singleton6 {
+    //构造方法
+    private Singleton6() {
+    }
+
+    //使用java中的原子类进行引用instance对象
+    private static final AtomicReference<Singleton6> instance = new AtomicReference<>();
+
+    //公共方法
+    public static final Singleton6 getInstance() {
+        while (true) {
+            //使用了死循环，对CPU压力较大
+            Singleton6 current = instance.get();
+            if (current != null) {
+                return current;
+            }
+            //可能生成多余的垃圾对象
+            current = new Singleton6();
+            if (instance.compareAndSet(null, current)) {
+                return current;
+            }
+        }
+    }
+}
+```
+
+# Exception和Error
+
+## 问题
+
+1.Exception和Error的区别
+
+2.运行时异常和一般异常的区别
+
+3.写出常见的运行时异常
+
+## Exception和Error的区别
+
+Exception和Error都继承自Throwable，在Java中只有Throwable类型的实例才可以被抛出或者捕获
+
+Error指正常情况下不太可能出现的情况，绝大部分的Error或导致程序崩溃，处于非正常的不可恢复的状态，如OutOfMemoryError、StackOverflowError,是程序中不应该试图捕获的严重问题。
+
+Exception是程序正常运行中的意外情况，可以捕获处理。
+
+## 运行时异常和一般异常的区别
+
+受检查异常：在编译时被强制检查的异常，在方法的声明中声明的异常。举例：ClassNotFoundException、IOException
+
+不受检查异常：不受检查异常通常是在编码中可以避免的逻辑错误，根据需求来判断如何处理，不需要再编译期强制要求。
+
+## 写出常见的运行时异常
+
+运行时异常RuntimeException是所有不受检查异常的基类。例如：NullPointException 空指针引用异常
+
+ClassCastException 类型强制转换异常
+
+IllegalAragumentException 传递非法参数异常
+
+NumberFormatException 数字格式异常（例如把字符串赋值给数字类型）
+
+IndexOutOfBoundsException 下标越界异常
+
+## 写出常见非运行时异常
+
+ClassNotFoundException 找不到指定class的 异常
+
+IOException IO操作异常
+
+## 写出常见Error
+
+NoclassDefFoundError 找不到class定义的异常
+
+StackOverflowError 深递归导致栈被耗尽而抛出的异常
+
+OutOfMemoryError 内存溢出异常
+
+## ClassNotFoundException和NoClassDefFoundError区别？
+
+### **ClassNotFoundException**
+
+当应用程序运行的过程中尝试使用类加载器去加载Class文件的时候，如果没有再classpath中找到指定的类，就会抛出***ClassNotFoundException***。一般情况下使用Class.forName( )时会出现这种异常，例如加载JDBC驱动类。
+
+### **NoClassDefFoundError**
+
+并不需要应用程序关心catch的问题，因为是个Error。当JVM再加载一个类的时候，如果这个类在编译期是可用的，但是在运行时找不到这个类的定义时，JVM抛出***NoClassDefFoundError***。一般情况下，在使用框架时，如果框架组件依赖了某个包，没有导入，就会出现这个问题，或者由于版本问题导致。
+
+## throw和throws的区别
+
+throw是在方法体内，手动抛出的异常，一次只能抛出一个异常对象，由方法体处理，如果方法体不处理，则需要在方法上声明throws
+
+throws是在方法声明时，表明该方法可能产生的所有异常，不做任何处理向上层传
+
+## 关于异常的一些细节
+
+RuntimeException是不可预知的，程序应自行避免
+
+非RuntimeException的一般异常时可预知的，由编译器校验
+
+**从责任角度看**
+
+1.Error属于JVM需要负担的责任
+
+2.RuntimeException属于程序员应该负担的责任
+
+3.Checked Exception可检查异常时Java编译器应该负担的责任
+
+## Java异常的处理原则
+
+- **具体明确：抛出的异常应能通过异常类名和message准确说明异常的类型和产生异常的原因**
+
+  具体明确指的是在抛出异常时需要针对具体问题来抛出异常，抛出的异常要足够具体详细；在捕获异常时需要对捕获的异常进行细分，这时会有多个catch语句块，这几个catch块中间泛化程度越低的异常需要越放在
+
+  　　前面捕获，泛化程度高的异常捕获放在后面，这样的好处是如果出现异常可以近可能得明确异常的具体类型是什么。
+
+  　　例如 FileInputStream 的一个构造方法如下, 对file对象做检查后判断file是否有效，如果无效直接抛出FileNotFoundException,而不是IOException或者其他更宽泛的Exception。
+
+  同样的,在对异常做捕获处理时,也需要做到具体明确，以下try语句块中read()和close方法均会抛出IOException而FileInputStream()抛出的是FileNotFoundException
+
+  　　事实上FileNotFoundException继承自IOException，用一个IOException 就可以囊括所有的异常，这里仍然使用了两个catch块来分别捕获,为的就是方便定位异常问题。
+
+- **提早抛出：应尽可能早的发现并抛出异常，便于精确定位问题**
+
+  提早抛出的基本目的还是为了防止问题扩散，这样出现异常的话排查起来会比较耗时，比较典型的一种情况是 NPE(NullPointerException),当某个参数对象为null时，如果不提早判断并抛出异常的话，这个null可能
+
+  　　会藏的比较深，等到出现NPE时就需要往回追溯代码了。这样就给排查问题增加了难度。所以我们的处理原则是出现问题就及早抛出异常。
+
+  　　例如 上面FileInputStream 的构造方法，在使用前就对File 的path做了判断，如果为null 就及早的抛出NullPointerException，防止在后面open方法中传入一个null,从而简化了出现异常的情况，方便定位问题。
+
+   
+
+- **延迟捕获：异常的捕获和处理应尽可能延迟，让掌握更多信息的作用域来处理异常**
+
+  延迟捕获说的是对异常的捕获和处理需要根据当前代码的能力来做,如果当前方法内无法对异常做处理,即使出现了检查异常也应该考虑将异常抛出给调用者做处理，如果调用者也无法处理理论上他也应该继续上抛，
+
+  　　这样异常最终会在一个适当的位置被catch下来，而比起异常出现的位置，异常的捕获和处理是延迟了很多。但是也避免了不恰当的处理。
+
+## 对异常的了解
+
+1. 尽量不要捕获类似Exception这样的通用异常
+2. 不要生吞异常，即catch到之后不处理
+3. 在实际产品中，要借助日志
+4. try-catch会产生额外的性能开销，不要一个大的try包住大段代码
+
+
+
+# int和Integer的区别
+
+int是整型，八种基本类型之一。
+
+Integer是int对应的包装类，他有一个final修饰的int字段，并提供了数学运算，int和String之间转换等常用方法。
+
+Integer和String一样是不可变类型。
+
+查看源码发现，在java5之后，valueOf使用了一个缓存机制，默认缓存是-128到127。在创建这个范围内的整数时，不需要new新对象，而是使用缓存，提高性能。
+
+```java
+ public static void main(String[] args) {
+        Integer integer1 = new Integer(1);
+        Integer integer2 = new Integer(1);
+        Integer integer3 = 1;
+        Integer integer4 = 1;
+        System.out.println(integer1==integer2); //输出false
+        System.out.println(integer3==integer4); //输出true
+    }
+```
+
+缓存在Boolean、Short、Byte和Character中同样存在。
+
+把基本数据类型转换成包装类型时装箱（boxing），反之时拆箱（unboxing）。
+
+java中有自动拆箱和自动装箱，但是在性能敏感的场合，尽量避免无意义的拆箱装箱行为。
+
+另外，原始数据类型int不能和java泛型结合使用，原始数据类型时线程不安全的。
+
+
+
+# 算法
+
+## 1. 实现大数的加法
+
+例如：String a = "123456777..."   a.size > 1000
+
+​			String b = "123456788..."  b.size > 1000
+
+```java
+public static void main(String[] args) {
+    //思路：首先设置一个char[]来存放结果，用tag标志进位，从末尾向前加，最后转为String输出
+        String a = "54352";
+        String b = "12454326459";
+        char[] large = null;
+        char[] small = null;
+        if (a.length() > b.length()) {
+            large = a.toCharArray();
+            small = b.toCharArray();
+        } else {
+            large = b.toCharArray();
+            small = a.toCharArray();
+        }
+        int tag = 0; //进位符
+        //结果集
+        char[] result = new char[large.length + 1];
+        int i = small.length - 1;
+        int j = large.length - 1;
+        while (j >= 0) {
+            if (i < 0) {
+                int tmp = large[j] - '0' + tag;
+                System.out.println(tmp);
+                tag = tmp / 10;
+                result[j + 1] = (char) ((tmp % 10) + '0');
+                i--;
+                j--;
+            } else {
+                int tmp = small[i] - '0' + large[j] - '0' + tag;
+                System.out.println(tmp);
+                tag = tmp / 10;
+                result[j + 1] = (char) ((tmp % 10) + '0');
+                i--;
+                j--;
+            }
+        }
+        result[0] = (char) (tag + '0');
+        String s = new StringBuffer().append(result).toString();
+        if(tag == 0){
+            System.out.println(s.substring(1));//去除第一个字符'0'
+        }else {
+            System.out.println(s);
+        }
+    }
+```
+
+## 2. 实现大数的乘法
+
+例如：String a = "123456777..."   a.size > 1000
+
+​			String b = "123456788..."  b.size > 1000
+
+分析：n位数×m位数 < m+n位数
+
+```java
+public void testmulti() {
+    System.out.println(99 * 99);
+    String a = "99";
+    String b = "99";
+    char[] large = null;
+    char[] small = null;
+    if (a.length() > b.length()) {
+      large = a.toCharArray();
+      small = b.toCharArray();
+    } else {
+      large = b.toCharArray();
+      small = a.toCharArray();
+    }
+    int[] multi = new int[a.length() + b.length()];
+    for (int j = small.length - 1; j >= 0; j--) {//各位对齐
+      for (int i = large.length - 1; i >= 0; i--) {
+        int num1 = small[j] - '0';
+        int num2 = large[i] - '0';
+        multi[large.length - 1 - i + small.length - 1 - j] += num1 * num2;
+      }
+    }
+    //此处循环条件使用 i < multi.length - 1或 i < multi.length 均可，因为最后一位不可能大于等于10
+    for (int i = 0; i < multi.length - 1; i++) {
+      if (multi[i] >= 10) {
+        multi[i + 1] += multi[i] / 10;
+        multi[i] %= 10;
+      }
+    }
+    //将数组转换到StringBuilder中
+    StringBuilder builder = new StringBuilder();
+    for (int i = multi.length - 1; i >= 0; i--) {
+      builder.append(multi[i]);
+    }
+    //转换为最终结果集字符串
+    String result = builder.toString();
+    if (result.startsWith("0")) {
+      result = result.substring(1);
+    }
+    System.out.println(result);
+  }
+```
+
+![image-20200321144135794](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20200321144135794.png)
+
+
+
+## 3. 字符串处理
+
+### 3.1 找出字符串中出现最多的字符
+
+1. 暴力双重for循环，时间复杂度O(n*n)
+2. 使用HashMap,时间复杂度O(n)
+
+### 3.2 找出字符串中第一次重复出现的字符
+
+分析：使用HashMap或者Set，每次查询是否重复，不重复则存入，重复则返回
+
+### 3.3 在字符串中找出第一个只重复一次的字符
+
+分析：使用HashMap，先遍历一遍数组，把每个字符的account计算并存入map中去，再遍历一遍数组，查找第一个count为1的字符
+
+### 3.4 统计手机号各个数字的个数，并按照数字升序输出
+
+分析：使用桶排序，把每个数字对应到数组角标上
+
+```java
+public void test3(){
+    int[] count = new int[10];
+    String mobile = "131253524587";
+    for (int i = 0; i < mobile.length(); i++) {
+      char c = mobile.charAt(i);
+      count[c-'0']++;
+    }
+    for (int i = 0; i < count.length; i++) {
+      if(count[i] != 0){
+        System.out.println(i+" 出现了 "+count[i]+"次");
+      }
+    }
+  }
+输出---->
+1 出现了 2次
+2 出现了 2次
+3 出现了 2次
+4 出现了 1次
+5 出现了 3次
+7 出现了 1次
+8 出现了 1次
+```
+
+### 3.5 输出一个字符串和字节数，输出为按字节截取字符串，但是要保证汉字不能被截半个
+
+例如：输入“人abc”，4，则应该截取为“人a”，
+
+​			输入“人ab们def” ，6，则应该截取为“人ab”，而不是“人ab+们的半个”
+
+> 获取字符字节数技巧：
+>
+> ```java
+> int len = String.valueOf('人').getBytes().length;
+> //即可获取字符'人'的字节数
+> //本机为3
+> ```
+
+```java
+public void test4(){
+    String s = "人abc们def";
+    int count = 4;//需要截取的字节数
+    int sum = 0;//已经截取的字节数
+    StringBuilder builder = new StringBuilder();//使用StringBuilder便于拼接字符
+    for (int i = 0; i < s.length(); i++) {
+      int len = String.valueOf(s.charAt(i)).getBytes().length;//每个字符的字节数
+      if(sum + len <= count){
+        sum += len;
+        builder.append(s.charAt(i));
+      }else {
+        break;
+      }
+    }
+    System.out.println(builder);
+  }
+```
+
+### 3.6 请写出从如下代码中截取efg的代码
+
+```html
+<p id="text">abcdefg</p>
+```
+
+```java
+//一般方法 
+public void test5(){
+    String s = "<p id=\"text\">abcdefg</p>";
+    String reg = "efg";
+    int index = s.indexOf(reg);
+    String target = s.substring(index,reg.length());
+    System.out.println(target);
+  }
+```
+
+```java
+//正则表达式方法
+public void test5(){
+    String s = "<p id=\"text\">abcdefg</p>";
+    String reg= "(.*)(efg)(.*)";
+    Pattern pattern = Pattern.compile(reg);
+    Matcher matcher = pattern.matcher(s);
+    if(matcher.find()){
+      System.out.println(matcher.group(1));
+      System.out.println(matcher.group(2));
+      System.out.println(matcher.group(3));
+    }
+  }
+控制台输出-->
+<p id="text">abcd
+efg
+</p>
+```
+
+### 3.7 设计一种反转字符串的算法，例如源字符串str=“abcdefg”，反转后字符串des=“gfedcba”
+
+- 投机取巧法，使用StringBuilder的reverse( )方法
+- 创建一个des空字符串，str从后往前遍历，把每个字符拼接到des中
+- 把str字符串的字符首位依次互换，以str.length/2为界限
+
+### 3.8 写函数将句子按照一定的分割符分割后返回
+
+例如：输入"I love the game" 输出"game the love I"
+
+分析：将字符串用是split( )函数分成多个字符串，再用StringBuilder从后往前遍历加入
+
+### 3.9 给定一个字符串，反转字符串中每个字符的顺序，同时保留单词和空格的初始位置
+
+例如：输入"Let's take LeetCode contest"
+
+​			输出"s'teL ekat edoCteeL tsetnoc"
+
+分析：用空格把每个单词分割出来，再把每个单词逆转拼接成结果字符串
+
+```java
+public void test6(){
+	String s= "Let's take LeetCode contest";
+    String[] arrs = s.split(" ");
+    StringBuilder builder = new StringBuilder();
+    //遍历字符串数组
+    for (String arr : arrs) {
+      //遍历每一个字符串的每一个字符，反向存入builder中
+      for (int i = arr.length() - 1; i >= 0; i--) {
+        builder.append(arr.charAt(i));
+      }
+      builder.append(" ");
+    }
+    //除去最后多余的空格分隔符
+    String substring = builder.substring(0, builder.length() - " ".length());
+    System.out.println(substring);
+  }
+```
+
+### 3.10 判断字符串是不是合法的ipv4地址
+
+分析：按"."把IP地址分割，并且判断每个数字是否再0-255之间
+
+```java
+public boolean test7(String ip) {
+    ip = "1.1.1.1";
+    //java需要调用正则，java和正则都需要转义，即两层转义：当碰见特殊字符\,^,'','等需要进行转义。
+    String[] arrs = ip.split("\\.");
+    if (arrs.length != 4) {
+      return false;
+    }
+    for (String arr : arrs) {
+      try {
+        int num = Integer.parseInt(arr);
+        if (num > 255 || num < 0) {
+          return false;
+        }
+        if (!arr.equals("0") && arr.startsWith("0")) {
+          return false;
+        }
+      }catch(NumberFormatException e){
+        return false;
+      }
+    }
+    return true;
+  }
+```
+
+## 4. 数组处理
+
+### 4.1 求和最大的序列
+
+给定一整数序列A1,A2,,,Ah（可能有负数），求A1,A2,,,Ah中的一个子序列Ai-Aj，使得子序列和最大，并输出内容
+
+- 暴力破解法：把所有子序列都求出来，找到最大的输出
+
+- 动态规划法：递归求以i下标结尾的最大子序列，如果i-1结束的最大子序列大于0，则加上，否则则为自己
+
+  ```java
+  //暴力破解法
+  public void test8() {
+      int[] nums = {-1, -2, 1, 6, 1, -10};
+      int step = 1; //参与求和的元素个数
+      int maxSum = nums[0];
+      int start = 0;
+      int end = 0;
+      while (step <= nums.length) {
+        for (int i = 0; i < nums.length-step; i++) {
+          int tmpSum = nums[i];
+          for (int j = i + 1; j < 1 + step; j++) {
+            tmpSum += nums[j];
+          }
+          if (tmpSum >= maxSum) {
+            start = i;
+            end = i + step - 1;
+            maxSum = tmpSum;
+          }
+        }
+        step++;
+      }
+      System.out.println(maxSum);
+      System.out.println(start);
+      System.out.println(end);
+    }
+  ```
+
+  ```java
+  //动态规划的解法 
+  //dp方程sums[i] = sum[i-1] > 0 ? sum[i-1] + nums[i] : nums[i];
+  public void test9() {
+      int[] nums = {-1, -2, 1, 6, 1, -10};
+      int max = nums[0];
+      //以第i个元素结尾的最大子序列的和
+      int[] sums = new int[nums.length];
+      sums[0] = nums[0];
+      //以第i个元素结尾的和最大子序列是从几开始的
+      int[] starts = new int[nums.length];
+      //以第i个元素结尾的和最大子序列到几截至
+      int end = 0;
+      for (int i = 1; i < nums.length; i++) {
+        if(sums[i-1]>0){
+          //代表前面的子序列大于0
+          sums[i] = sums[i-1] + nums[i];
+          starts[i] = starts[i-1];
+        }else {
+          sums[i] = nums[i];
+          starts[i] = i;
+        }
+        if(sums[i] > max){
+          max = sums[i];
+          end = i;
+        }
+      }
+      System.out.println(max);
+      System.out.println(starts[end]);
+      System.out.println(end);
+    }
+  ```
+
+  ### 4.2 已排序数组去重排序
+
+  方法一：从头遍历，使用两个角标，每次用角标j找到重复元素的最后一个元素，赋值给角标i存的值
+
+```java
+class Solution { 
+    public int removeDuplicates(int[] nums) {
+        int i;
+        int j;
+        for(i = 0, j = 0; j < nums.length; i++,j++){
+            while(j < nums.length - 1 && nums[j] == nums[j+1]) j++;
+            nums[i] = nums[j];
+        }
+        return i;
+    }
+}
+```
+
+​		方法二：把数组放入HashSet中去重，再取出得到非重复的数组，再排序
+
+### 4.3 给出随机的100个数，序号为1-100，从小到大顺序输出，并输出相应的序号
+
+分析：使用双数组，第一个数组存数字本身，第二个数组存序号，使用冒泡排序同时交换两个数组。
+
+```java
+public void test10() {
+    int[] nums = {7, 6, 5, 3, 7, 3, 1, 7, 3, 1, 7};
+    int[] orders = new int[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      orders[i] = i + 1;
+    }
+    //数字交换的时候，并且交换orders数组（编号）
+    //冒泡排序，把最小的放到最前，依次遍历
+    for (int i = 0; i < nums.length; i++) {
+      for (int j = i + 1; j < nums.length; j++) {
+        if(nums[i]>nums[j]){
+          int tmp = nums[i];
+          nums[i] = nums[j];
+          nums[j] = tmp;
+          tmp = orders[i];
+          orders[i] = orders[j];
+          orders[j] = tmp;
+        }
+      }
+    }
+    for (int i = 0; i < nums.length; i++) {
+      System.out.println(nums[i]+"序号"+orders[i]);
+    }
+  }
+输出-->
+1序号7
+1序号10
+3序号4
+3序号9
+3序号6
+5序号3
+6序号2
+7序号8
+7序号1
+7序号5
+7序号11
+```
+
+### 4.4 奇偶调换
+
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组前半部分，偶数位于后半部分，并且偶数和偶数，奇数和奇数之间相对位置不变。
+
+- 投机取巧法：使用两个List，一个存奇数，一个存偶数。
+- 不借助第三方集合方法：数组遍历遇到偶数时，向后找遇到的第一个奇数，把这个奇数移到偶数前，然后循环找后面的第一个奇数向前挪
+
+```java
+public void test11(){
+    Integer[] nums = {1,4,1,7,8,3,2,6,8,9,3};
+    List<Integer> list1 = new ArrayList<>(); //奇数
+    List<Integer> list2 = new ArrayList<>(); //偶数
+    for (int num : nums) {
+      if(num % 2 == 0){
+        list2.add(num);
+      }else {
+        list1.add(num);
+      }
+    }
+    list1.addAll(list2);
+    list1.toArray(nums);
+    System.out.println(Arrays.toString(nums));
+  }
+```
+
+```java
+public void test12(){
+    Integer[] nums = {1,4,1,7,8,3,2,6,8,9,3};
+    for (int i = 0; i < nums.length; i++) {
+      if(nums[i] % 2 == 0){
+        //遇到了第一个偶数
+        for (int j = i+1; j < nums.length; j++) {
+          if(nums[j] % 2 == 1){
+            //遇到第一个奇数
+            int tmp = nums[j];
+            //数组向后挪
+            for(;j>i;j--){
+              nums[j] = nums[j-1];
+            }
+            nums[i] = tmp;
+            break;
+          }
+        }
+      }
+    }
+    System.out.println(Arrays.toString(nums));
+  }
+```
+
+# 数据库
+
+## 考点整理
+
+- 多表查询（必考）
+- 聚合函数和分组（重点）
+- 子查询
+
+## 内连接inner join、左连接left join、右连接right join的区别
+
+> 外键：引用另一张表的主键值做当前这一列的值
+
+1. inner join 两个表的数据一一对应，没有缺失
+2. left join左边表的数据都显示，如果右边表的数据缺失，则显示为null
+3. right join右边表的数据都显示，如果左边表数据缺失，则显示为null
+
+> 从查出来的结果中再使用条件查询，用having
+>
+> 从已知数据中使用条件查询，用where
+>
+> where 在分组之前进行限定，如果不满足条件，则不参与分组。
+>
+> having在分组之后进行限定，如果不满足结果，则不会被查询出来
+>
+> where 后不可以跟聚合函数，having可以进行聚合函数的判断。
+
+```
+聚合函数在分组查询之后对每个分组使用
+```
+
+```
+看到“每个”，就想到group by，如每个学生，每个部门。group by一般使用主键进行分组，以免重复，比如group by name 就可能重名数据合并
+```
+
+# String和StringBuilder和StringBuffer的区别
+
+1. String是final修饰的类，所有属性也是final，所以其值初始化之后就不可变，具有不可变性，也就是对字符串的操作，如拼接、剪切都会产生新的String对象
+2. StringBuffer本质是一个线程安全的可修改字符串序列（使用了synchronized关键字）。因为保证线程安全，所以会有额外的性能消耗。
+3. StringBuilder本质上和StringBuffer没有区别，但是StringBuilder去掉了线程安全的部分，提高了操作效率，是绝大多数开发时候的首选。
+4. 如果确定拼接字符串会发生多次，并且长度可预计，那么可以在开始的时候指定合适的大小，避免数组扩容带来的开销。
+
+# String创建了几个对象
+
+```java
+String s1 = new String("abc");
+//分析一下这句代码背后发生了什么
+//首先从堆中开辟一块String空间
+//然后从常量池中拿出"abc"放入堆中的空间
+//再把堆中这个String的地址赋给s1
+//
+//所以常量池只有一个"abc"
+//堆里面有两个String空间存有"abc"
+//栈中有两个变量指向堆中各自的String
+String s2 = new String("abc");
+System.out.pringlin(s1==s2); //false
+```
+
+# HashMap和HashTable的区别
+
+1. HashMap不是线程安全的，HashTable是线程安全的
+2. HashMap允许有null key和null value，HashTable不允许有null key和null value
+3. HashMap继承自AbstractMap，HashTable继承自Dictionary，二者都实现Map接口
+
+# Servlet生命周期
+
+1. Web容器加载Servlet类并实例化（默认延迟加载，第一次访问时才加载，可用<load-on-startup>1</load-on-startup>标签设置启动即加载）
+2. 运行init方法初始化（一次）
+3. 用户请求该Servlet，请求到达服务器时，运行其service方法（每次）
+4. service方法运行与请求对应的doGet/doPost（每次）
+5. 销毁实例调用destroy方法（一次）
+
+# 转发（forward）和重定向（redirect）的区别
+
+1. 转发是容器控制的跳转，服务器直接访问目标地址，把目标地址响应的内容读取出来，直接发送给浏览器。浏览器不知道请求从哪里来，所以浏览器地址不变。
+2. 重定向是服务器收到请求后，返回一个状态码给浏览器，浏览器请求新地址，地址栏改变。
+3. 转发效率高，尽量用转发，但转发不能跳转到其他服务器上，重定向可以跳转到其他服务器上。
+4. 转发是服务器行为，重定向是客户端行为
+5. 转发是浏览器只做了一次访问请求。重定向是浏览器做了至少两次的访问请求
+6. 转发2次跳转之间传输的信息不会丢失，重定向2次跳转之间传输的信息会丢失（request范围）。
+
+# 数据库连接池的工作机制
+
+服务器启动时会建立一定的池连接，并一直维持不少于此数目的池连接。
+
+客户端程序需要连接时，池驱动程序会返回一个未使用的池连接并将其标记为忙。
+
+如果当前没有空闲连接，池驱动程序就新建一个数量的连接，新建连接的数量有配置参数决定。
+
+当时用的池连接调用完成后，池驱动程序将此链接表记为空闲，其他调用就可以使用这个连接。
+
+# Get和Post区别
+
+1. Get将表单中数据按照param=value的形式，添加到action所指向的URL后面，并且两者使用“？”连接，而每个变量之间使用“&”连接。
+
+   Post是将表单中的数据放在form表单的数据体中，按照变量和值对应的方式，传递到action所指向的URL
+
+2. 某种方面来说Get是不安全的，因为再传输过程中，数据放在请求的URL中，Post的所有操作对用户来说是不可见的
+
+3. http协议中提到过get请求更安全(safe method), 其中的意思就是说GET方法不会改变服务器端的数据。所以更安全。
+
+   其实安全是相对的，只是说看追什么数据进行传输的安全相对性。没有绝对实际的安全性。
+
+4. Get传输数据量小，这主要是由于受URL长度限制，而Post可以传输大量的数据，所以再上传文件的时候只能用Post
+
+5. Get限制Form表单的数据集必须为ASCII字符，而Post支持整个ISO10646字符集
+
+# MVC设计思想
+
+model（模型）、view（视图）、controller（控制器）分离设计：
+
+model：即处理业务逻辑的模块，每一种处理一个模块（例如Service层和Dao层）
+
+view：负责页面的显示，显示model处理结果给用户，主要实现数据到页面转换过程
+
+controller：负责每个请求的分发，把form数据传递给model处理，把处理结果的数据传递给view（例如Servlet层）
+
+# MVC和三层架构的区别
+
+MVC（模型Model-视图View-控制器Controller）是一种架构模式，可以用它来创建在域对象和UI表示层对象之间的区分。
+
+同样是架构级别的，相同的地方在于他们都有一个表现层，但是他们不同的地方在于其他的两个层。
+
+在三层架构中没有定义Controller的概念。这是最不同的地方。而MVC也没有把业务的逻辑访问看成两个层，这是采用三层架构或MVC搭建程序最主要的区别。当然了。在三层中也提到了Model，但是三层架构中Model的概念与MVC中Model的概念是不一样的，“三层”中典型的Model层是由业务逻辑与访问数据组成的。而MVC里，则是以实体类构成的。
+
+**总结：**
+
+MVC和三层架构的区别：
+       M 即Model(模型层),主要负责处理业务逻辑以及数据库的交互
+       V 即View(视图层),主要负责显示数据和提交数据
+       C 即Controller(控制层),主要是永作辅助捕获请求并控制请求转发
+
+​       三层
+​       UI界面层
+​       BLL业务逻辑层
+​       DAL数据访问层
+
+​       三层是基于业务逻辑来分的，而mvc是基于页面来分的
+​       MVC模式是一种复合设计模式，一种解决方案
+​       三层是种软件架构，通过接口实现编程
+​       三层模式是体系结构模式，MVC是设计模式
+​       三层模式又可归于部署模式，MVC可归于表示模式
+
+# session和cookie的区别
+
+1. session保存再服务器，客户端不知道其中信息
+
+   cookie保存在客户端，服务器能知道其中的信息
+
+2. session中保存的是对象，cookie中保存的是字符串
+
+3. session不能区分路径，同一个用户在访问一个网站期间，所有的session在任何一个地方都可以访问到
+
+   cookie设置参数路径，那么在同一个网站不同路径下的cookie是互相访问不到的
+
+4. session需要借助cookie才能正常，如果客户端禁止cookie，那么session将失效
+
+>  session有效期默认30分钟
+
+# 多态的好处
+
+把不同的子类对象都当作父类来看，可以屏蔽不同子类对象之间的差异，写出通用的代码，做出通用的编程，以适应需求的不断变化。
+
+#  重写（Override）
+
+存在于继承体系中，指子类实现了一个与父类在方法声明上完全相同的一个方法。
+
+为了满足里式替换原则，重写有以下三个限制：
+
+- 子类方法的访问权限必须大于等于父类方法；
+- 子类方法的返回类型必须是父类方法返回类型或为其子类型。
+- 子类方法抛出的异常类型必须是父类抛出异常类型或为其子类型。
+
+# JVM模型和GC
+
+# 类加载机制
+
+# 多个类加载器加载同一个类，会出现什么情况
+
+# ClassLoader的获取、分类、应用
+
+# 可以保持建立多个ClassLoader么
+
+# Redis数据类型
+
+# MySQL索引用B+数，为什么
+
+# 索引用过么
+
+# 线程池有几种，参数什么含义
+
+# 堆排序
+
+# 策略模式
+
+# NIO
+
+# Collections类的方法
+
+# 谈谈红黑树
+
+# Spring生命周期（不是Bean）
+
+# AOP
+
+# maven的scope
+
+ 
