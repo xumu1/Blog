@@ -17,5 +17,7 @@
 17 git reset --hard xxx(分支代号)
 
 git config --global user.name "yourname"
+
 git config --global user.email“your@email.com"
+
 需要对电脑进行配置
