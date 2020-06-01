@@ -1,4 +1,4 @@
-1. git clone xxx
+1. git clone -b branch xxx 拉取指定分支的代码
 2. git add xxx
 3. git add . 添加本地所有文件
 4. git commit -m "message"
