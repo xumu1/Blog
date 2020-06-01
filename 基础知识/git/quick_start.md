@@ -10,7 +10,7 @@
 10. git checkout master 切换到master分支
 11. git merge dev 合并dev分支（处于master分支）
 12. git branch -D dev 删除本地dev分支
-13. git push origin :dev 删除远程dev分支（删除本地后进行）
+13. git push origin :dev 上传远程dev分支（上传本地后进行）
 14. git reset --hard head^返回到上个分支
 15. git log 查看日志
 16. git reflog 查看日志
