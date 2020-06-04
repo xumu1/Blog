@@ -9,12 +9,14 @@
 9. git status 查看git状态
 10. git checkout master 切换到master分支
 11. git merge dev 合并dev分支（处于master分支）
-12. git branch -D dev 删除本地dev分支
-13. git push -u origin dev 上传远程dev分支（上传本地后进行）
-14. git reset --hard head^返回到上个分支
-15. git log 查看日志
-16. git reflog 查看日志
-17 git reset --hard xxx(分支代号)
+12. git branch -d dev 删除本地dev分支
+13. git branch -D dev 强制删除本地dev分支
+14. git push origin --delete dev   可以删除远程分支dev  
+15. git push -u origin dev 上传远程dev分支（上传本地后进行）
+16. git reset --hard head^返回到上个分支
+17. git log 查看日志
+18. git reflog 查看日志
+19. git reset --hard xxx(分支代号)
 
 git config --global user.name "yourname"
 
