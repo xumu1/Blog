@@ -1,0 +1,3 @@
+集合类如set\sorted set\hash\string方法使用add和delete，因为可以从任意位置添加和删除
+
+顺序表类如list方法使用push和pop，因为只能从固定两端进行添加和删除
