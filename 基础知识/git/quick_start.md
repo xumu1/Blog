@@ -20,7 +20,7 @@
 20. 当我想从远程仓库里拉取一条本地不存在的分支时：
 git checkout -b 本地分支名 origin/远程分支名
 这个将会自动创建一个新的本地分支，并与指定的远程分支关联起来。
-
+21. git fetch是将远程主机的最新内容拉到本地，用户在检查了以后决定是否合并到工作本机分支中。而git pull 则是将远程主机的最新内容拉下来后直接合并，即：git pull = git fetch + git merge，这样可能会产生冲突，需要手动解决。
 
 git config --global user.name "yourname"
 
