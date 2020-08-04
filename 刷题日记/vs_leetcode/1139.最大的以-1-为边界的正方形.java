@@ -7,7 +7,7 @@
 // @lc code=start
 class Solution {
     public int largest1BorderedSquare(int[][] grid) {
-
+        return 0;
     }
 }
 // @lc code=end
