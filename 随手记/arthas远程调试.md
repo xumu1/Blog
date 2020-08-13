@@ -21,8 +21,6 @@ $ watch demo.MathGame primeFactors "{params,returnObj}" -x 2
 
 当前系统的实时数据面板
 
-参数说明
-
 参数名称 参数说明
 
 [i:] 刷新实时数据的时间间隔 (ms)，默认 5000ms
