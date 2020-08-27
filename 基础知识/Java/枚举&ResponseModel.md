@@ -177,4 +177,8 @@ public final class ResponseModel {
     public final static String EXCEPTION_CODE = "5000";
 
 }
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> 51e8fae54fedf728bf2bcb37dc569af31f06a68e
