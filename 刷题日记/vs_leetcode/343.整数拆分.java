@@ -1,5 +1,3 @@
-import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
-
 /*
  * @lc app=leetcode.cn id=343 lang=java
  *
