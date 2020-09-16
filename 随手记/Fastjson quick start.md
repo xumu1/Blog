@@ -113,7 +113,7 @@ Person newPerson = JSON.parseObject(jsonObject, Person.class);
 private Date dateOfBirth;
 ```
 
-# 后记
+## 后记
 
 JSONObject代表json对象，JSONArray代表json对象数组，
 
@@ -130,3 +130,11 @@ JSON这个类主要是实现转化用的，最后的数据获取，还是要通�
 > JSON类之toJSON()方法，实现javabean对象转化为json对象
 
 > JSON类之toJavaObject()方法，实现json对象转化为javabean对象
+
+
+
+## 参考链接
+
+Fastjson 简明教程https://www.runoob.com/w3cnote/fastjson-intro.html
+
+Json详解以及fastjson使用教程https://blog.csdn.net/srj1095530512/article/details/82529759
