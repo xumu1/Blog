@@ -25,6 +25,6 @@ git checkout -b 本地分支名 origin/远程分支名
 
 git config --global user.name "yourname"
 
-git config --global user.email“your@email.com"
+git config --global user.email"your@email.com"
 
 需要对电脑进行配置
