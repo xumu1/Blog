@@ -1,6 +1,3 @@
-import lombok.SneakyThrows;
-import org.junit.Test;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -14,8 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @author xumu
  */
 public class testExecutors {
-    @Test
-    public void test1() throws Exception {
+    public static void main(String[] args) throws Exception {
         // ThreadPoolExecutor threadPoolExecutor =
         // new ThreadPoolExecutor(10,
         // 20,
