@@ -14,8 +14,28 @@ java -jar arthas-boot.jar
 OGNL 表达式官网：https://commons.apache.org/proper/commons-ognl/language-guide.html
 
 ```
-$ watch demo.MathGame primeFactors "{params,returnObj}" -x 2
+$ watch demo.MathGame primeFactors "{params,returnObj}" -x 3
 ```
+
+观察异常信息的例子
+
+```
+$ watch demo.MathGame primeFactors "{params[0],throwExp}" -e -x 3
+```
+
+Press Ctrl+C to abort.
+Affect(class-cnt:1 , method-cnt:1) cost in 62 ms.
+ts=2018-12-03 19:38:00; [cost=1.414993ms] result=@ArrayList[
+@Integer[-1120397038],
+java.lang.IllegalArgumentException: number is: -1120397038, need >= 2
+at demo.MathGame.primeFactors(MathGame.java:46)
+at demo.MathGame.run(MathGame.java:24)
+at demo.MathGame.main(MathGame.java:16)
+,
+]
+-e 表示抛出异常时才触发
+
+express 中，表示异常信息的变量是 throwExp
 
 # dashboard
 
