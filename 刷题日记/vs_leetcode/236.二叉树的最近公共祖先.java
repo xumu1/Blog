@@ -34,35 +34,18 @@ class Solution {
         if (root == null) {
             return c;
         }
-        System.out.println(root.val + "1");
-        if (root == sp || root == sq) {
-            return c + 1;
-        }
         int l = count(root.left, c);
         int r = count(root.right, c);
+        if (root == sp || root == sq) {
+            if (l != 0 || r != 0) {
+                res = root;
+            }
+            return c + 1;
+        }
         if (l == 1 && r == 1) {
-            System.out.println(root.val);
             res = root;
         }
-
         return l + r;
     }
-    // public int count(TreeNode root, int c) {
-    // if (root == null) {
-    // return c;
-    // }
-    // int l = count(root.left, c);
-    // int r = count(root.right, c);
-    // if (root == sp || root == sq) {
-    // if (l != 0 || r != 0) {
-    // res = root;
-    // }
-    // return c + 1;
-    // }
-    // if (l == 1 && r == 1) {
-    // res = root;
-    // }
-    // return l + r;
-    // }
 }
 // @lc code=end
