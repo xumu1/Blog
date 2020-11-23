@@ -27,7 +27,7 @@ class Solution {
         sp = p;
         sq = q;
         count(root, 0);
-        return res;
+        return res;2
     }
 
     public int count(TreeNode root, int c) {
