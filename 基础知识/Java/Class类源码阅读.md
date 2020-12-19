@@ -58,7 +58,7 @@ returns:
 
  the Class object for the class with the specified name.
 
-![image-20201218142404943](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218142404943.png)
+![image-20201218142404943](../../images/image-20201218142404943.png)
 
 ## isAsciiDigit
 
@@ -111,7 +111,7 @@ returns:
 
  a string representation of this class object.
 
-![image-20201218141124627](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218141124627.png)
+![image-20201218141124627](../../images/image-20201218141124627.png)
 
 
 
@@ -150,7 +150,7 @@ returns:
 
  the Class object for the class with the specified name.
 
-![image-20201218141859434](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218141859434.png)
+![image-20201218141859434](../../images/image-20201218141859434.png)
 
 
 
@@ -164,7 +164,7 @@ returns:
 
 一个空参构造函数构造的对象
 
-![image-20201218142848482](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218142848482.png)
+![image-20201218142848482](../../images/image-20201218142848482.png)
 
 
 
@@ -237,7 +237,7 @@ public ClassLoader getClassLoader() {
 Returns:
 the class loader that loaded the class or interface represented by this object.
 
-![image-20201218151239066](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218151239066.png)
+![image-20201218151239066](../../images/image-20201218151239066.png)
 
 
 
@@ -266,7 +266,7 @@ an array of TypeVariable objects that represent the type variables declared by t
 
 获取泛型类型
 
-![image-20201218151747239](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218151747239.png)
+![image-20201218151747239](../../images/image-20201218151747239.png)
 
 ## getGenericSuperclass()
 
@@ -291,7 +291,7 @@ public Type getGenericSuperclass() {
 Returns:
 the superclass of the class represented by this object
 
-![image-20201218152126770](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218152126770.png)
+![image-20201218152126770](../../images/image-20201218152126770.png)
 
 ## getPackage()
 
@@ -304,9 +304,9 @@ public Package getPackage() {
 Returns:
 the package of the class, or null if no package information is available from the archive or codebase.
 
-![image-20201218152624714](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218152624714.png)
+![image-20201218152624714](../../images/image-20201218152624714.png)
 
-![image-20201218152711112](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218152711112.png)
+![image-20201218152711112](../../images/image-20201218152711112.png)
 
 ## getInterfaces()
 
@@ -347,9 +347,9 @@ Generic(泛型)特殊处理，ParameterizedType表示参数化类型，直白点
 
 对比图：
 
-![image-20201218154215257](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218154215257.png)
+![image-20201218154215257](../../images/image-20201218154215257.png)
 
-![image-20201218154237499](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218154237499.png)
+![image-20201218154237499](../../images/image-20201218154237499.png)
 
 <a href="##refDemo1">点击跳转demo源代码</a>
 
@@ -414,7 +414,7 @@ the immediately enclosing class of the underlying class
 
 如果一个class表示在方法中的一个本地或匿名class, 那么通过java.lang.Class.getEnclosingClass()方法将返回的底层类的立即封闭类。 反之则为NULL。
 
-![image-20201218165235536](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218165235536.png)
+![image-20201218165235536](../../images/image-20201218165235536.png)
 
 ## getSimpleName()
 
@@ -443,7 +443,7 @@ Returns:
 
 the simple name of the underlying class as given in the source code. Returns an empty string if the underlying class is anonymous.
 
-![image-20201218170218542](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218170218542.png)
+![image-20201218170218542](../../images/image-20201218170218542.png)
 
 ## getTypeName
 
@@ -454,7 +454,7 @@ public String getTypeName()
 Returns:
 an informative string for the name of this type
 
-![image-20201218170338634](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218170338634.png)
+![image-20201218170338634](../../images/image-20201218170338634.png)
 
 ## getCanonicalName()
 
@@ -496,9 +496,9 @@ local class(在方法内定义的类)
 
 anonymous class(匿名类)
 
-![image-20201218171721446](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218171721446.png)
+![image-20201218171721446](../../images/image-20201218171721446.png)
 
-![image-20201218173001331](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218173001331.png)
+![image-20201218173001331](../../images/image-20201218173001331.png)
 
 ## isMemberClass()
 
@@ -535,7 +535,7 @@ Returns：
 
 注意：如果时top level class，则返回null
 
-![image-20201219152846570](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201219152846570.png)
+![image-20201219152846570](../../images/image-20201219152846570.png)
 
 ## isLocalOrAnonymousClass()
 
@@ -563,7 +563,7 @@ the array of Class objects representing the public members of this class
 
 获取这类内部的public类
 
-![image-20201219153142635](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201219153142635.png)
+![image-20201219153142635](../../images/image-20201219153142635.png)
 
 ## getFields()
 
@@ -1281,7 +1281,7 @@ public T[] getEnumConstants() {
 Returns:
 an array containing the values comprising the enum class represented by this Class object in the order they're declared, or null if this Class object does not represent an enum type
 
-![image-20201219175519029](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201219175519029.png)
+![image-20201219175519029](../../images/image-20201219175519029.png)
 
 ## getEnumConstantsShared
 
@@ -1295,7 +1295,7 @@ the elements of this enum class or null if this Class object does not represent 
 
 和getEnumConstants区别是，这个方法没有克隆
 
-![image-20201219175431347](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201219175431347.png)
+![image-20201219175431347](../../images/image-20201219175431347.png)
 
 ## enumConstantDirectory()
 
@@ -1305,7 +1305,7 @@ Map<String, T> enumConstantDirectory()
 
 Returns a map from simple name to enum constant. This package-private method is used internally by Enum to implement public static <T extends Enum\<T>> T valueOf(Class\<T>, String) efficiently. Note that the map is returned by this method is created lazily on first use. Typically it won't ever get created.
 
-![image-20201219175459595](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201219175459595.png)
+![image-20201219175459595](../../images/image-20201219175459595.png)
 
 ## cast()
 
@@ -1321,7 +1321,7 @@ public T cast(Object obj) {
 Returns:
 the object after casting, or null if obj is null
 
-![image-20201219175853691](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201219175853691.png)
+![image-20201219175853691](../../images/image-20201219175853691.png)
 
 ## cannotCastMsg()
 
@@ -1364,7 +1364,7 @@ public <A extends Annotation> A getAnnotation(Class<A> annotationClass) {
 Since:
 1.5
 
-![image-20201219180325680](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201219180325680.png)
+![image-20201219180325680](../../images/image-20201219180325680.png)
 
 ## isAnnotationPresent()
 
@@ -1568,7 +1568,7 @@ Returns:
 
 the boolean value indicating whether objects of the type cls can be assigned to objects of this class
 
-![image-20201218145536606](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218145536606.png)
+![image-20201218145536606](../../images/image-20201218145536606.png)
 
 ## isInterface()
 
@@ -1616,7 +1616,7 @@ public native Class<? super T> getSuperclass();
 Returns:
 the superclass of the class represented by this object.
 
-![image-20201218151940361](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218151940361.png)
+![image-20201218151940361](../../images/image-20201218151940361.png)
 
 ## getInterfaces0()
 
@@ -1634,7 +1634,7 @@ Returns:
 
 the Class representing the component type of an array. If this class does not represent an array class this method returns null.
 
-![image-20201218155042117](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218155042117.png)
+![image-20201218155042117](../../images/image-20201218155042117.png)
 
 ## getModifiers()
 
@@ -1645,9 +1645,9 @@ public native int getModifiers();
 Returns:
 the int representing the modifiers for this class
 
-![image-20201218160427351](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218160427351.png)
+![image-20201218160427351](../../images/image-20201218160427351.png)
 
-![image-20201218160828402](C:\Users\93285\AppData\Roaming\Typora\typora-user-images\image-20201218160828402.png)
+![image-20201218160828402](../../images/image-20201218160828402.png)
 
 什么都不加 是0 ， public 是1 ，private 是 2 ，protected 是 4，static 是 8 ，final 是 16。
 
