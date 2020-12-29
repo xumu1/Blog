@@ -65,10 +65,12 @@ class Solution {
     //i: nums1的起始位置 j: nums2的起始位置
     public int findKth(int[] nums1, int i, int[] nums2, int j, int k) {
         if (i >= nums1.length) {
-            return nums2[j + k - 1];//nums1为空数组
+            //nums1为空数组
+            return nums2[j + k - 1];
         }
         if (j >= nums2.length) {
-            return nums1[i + k - 1];//nums2为空数组
+            //nums2为空数组
+            return nums1[i + k - 1];
         }
         if (k == 1) {
             return Math.min(nums1[i], nums2[j]);
