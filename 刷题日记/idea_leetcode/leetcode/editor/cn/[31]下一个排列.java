@@ -46,10 +46,65 @@
 // 👍 890 👎 0
 
 
+import java.util.Arrays;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    /*
+     *
+     * 123456
+     * 12346 5
+     * 1235 46
+     * 1236 45
+     * 124 356
+     * 124 36 5
+     * 124 5 36
+     * 124 5 6 3
+     * 124 6 3 5
+     * 124 6 5 3
+     * ...
+     * 654321
+     *  find a increase line ex: i and j point, and nums[i] < nums[j] from right starting,
+     *  then find a value nums[k] that larger than nums[i] from right starting,
+     *  then swap nums[i] and nums[k],
+     *  then sort the array from i to the end.
+     *
+     * two key points:
+     * 1. 增加幅度尽可能小
+     * 2. 将大数交换到前面后，对后面数进行排序
+     */
     public void nextPermutation(int[] nums) {
-
+        int len = nums.length;
+        int index = len - 2;
+        // find i and j
+        while (index >= 0) {
+            if (nums[index] < nums[index + 1]) {
+                break;
+            } else {
+                index--;
+            }
+        }
+        int i = index;
+        int j = index + 1;
+        if (index < 0) {
+            for (int m = 0; m < len / 2; m++) {
+                int tmp = nums[m];
+                nums[m] = nums[len - 1 - m];
+                nums[len - 1 - m] = tmp;
+            }
+            return;
+        }
+        int k = len - 1;
+        while (k > i) {
+            if (nums[k] > nums[i]) {
+                break;
+            }
+            k--;
+        }
+        int tmp = nums[k];
+        nums[k] = nums[i];
+        nums[i] = tmp;
+        Arrays.sort(nums, j, len);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
