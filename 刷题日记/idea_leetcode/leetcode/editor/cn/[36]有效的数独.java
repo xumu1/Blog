@@ -66,9 +66,9 @@ import java.util.HashSet;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isValidSudoku(char[][] board) {
-        // 每一行不重复
-        // 每一列不重复
-        // 每一个格子没有重复
+        // 1. 每一行不重复
+        // 2. 每一列不重复
+        // 3. 每一个格子没有重复
         ArrayList<ArrayList<Character>> list = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             // row
