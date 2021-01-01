@@ -111,7 +111,6 @@ class Solution {
         }
         return true;
     }
-
     public boolean checkArray(ArrayList<Character> arrayList) {
         HashSet<Character> set = new HashSet<>();
         for (Character character : arrayList) {
