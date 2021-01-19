@@ -27,7 +27,7 @@ class Solution {
         int min = head.val;
         return dp(left,right,res,min);
     }
-    public ListNode dp(ListNode left,ListNode right,ListNode res,int min){
+    private ListNode dp(ListNode left,ListNode right,ListNode res,int min){
         if(right == null) return res;
         if(left.val <= right.val){
             left = left.next;
