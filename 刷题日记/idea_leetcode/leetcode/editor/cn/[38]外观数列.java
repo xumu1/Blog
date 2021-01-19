@@ -68,7 +68,40 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String countAndSay(int n) {
+        String res = "1";
+        if (n == 1) {
+            return res;
+        }
+        for (int i = 0; i < n-1; i++) {
+            res = fun1(res);
+        }
+        return res;
+    }
 
+    // 返回 s 的外观数列
+    public String fun1(String s) {
+        int len = s.length();
+        if (len == 1) {
+            return "1" + s;
+        }
+        int count = 1;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < len; i++) {
+            if (s.charAt(i) == s.charAt(i - 1)) {
+                count++;
+            } else {
+                sb.append(count);
+                sb.append(s.charAt(i - 1));
+                count = 1;
+            }
+        }
+        if (s.charAt(len - 1) == s.charAt(len - 2)) {
+            sb.append(count);
+        }else {
+            sb.append(1);
+        }
+        sb.append(s.charAt(len - 1));
+        return sb.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
