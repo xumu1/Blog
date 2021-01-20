@@ -49,47 +49,28 @@ class Solution {
         array = candidates;
         len = candidates.length;
         Arrays.sort(array);
-        System.out.println(Arrays.toString(array));
-        ArrayList<Integer> objects = new ArrayList<Integer>();
-        objects.add(0);
-        dp(0,objects , target, res);
+        dfs(new ArrayList<Integer>(), target, res, 0);
         return res;
     }
 
-    private void dp(int step, ArrayList<Integer> chain, int target, List<List<Integer>> res) {
-        if (step == len || target <= 0) {
+    private void dfs(ArrayList<Integer> chain, int target, List<List<Integer>> res, int start) {
+        if (target < 0) {
             return;
         }
-        if (array[step] == target) {
-            chain.add(array[step]);
-            System.out.println(chain.toString());
-            System.out.println("===" + array[step] + "===\t" + step);
-            ArrayList<Integer> integers = new ArrayList<>(chain);
-            integers.remove(0);
-            res.add(integers);
-            chain.remove(chain.size() - 1);
-            // 不选
-            dp(step + 1, chain, target, res);
-        } else {
-            int i = array[step];
-
-            // 选这个数
-            if (step > 0 && array[step] == array[step - 1] && chain.get(chain.size() - 1) != array[step - 1]) {
-//                System.out.println(array[step]+"\t"+step);
-                chain.add(i);
-                // 不选
-                dp(step + 1, chain, target, res);
-                chain.remove(chain.size() - 1);
-            } else {
-                chain.add(i);
-                // 选
-                dp(step + 1, chain, target - i, res);
-                chain.remove(chain.size() - 1);
-                // 不选
-                dp(step + 1, chain, target, res);
-            }
-
+        if (target == 0) {
+            res.add(new ArrayList<>(chain));
         }
+        for (int i = start; i < len; i++) {
+            if (i > start && array[i] == array[i - 1]) {
+                continue;
+            }
+            int num = array[i];
+            chain.add(num);
+            dfs(chain, target - num, res, i + 1);
+            chain.remove(chain.size() - 1);
+        }
+
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
