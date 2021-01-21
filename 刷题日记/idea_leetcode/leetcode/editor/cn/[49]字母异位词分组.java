@@ -38,10 +38,10 @@ class Solution {
             if (map.get(str) != null) {
                 List<String> o = map.get(str);
                 o.add(strs[i]);
-            }else{
+            } else {
                 ArrayList<String> strings = new ArrayList<>();
                 strings.add(strs[i]);
-                map.put(str,strings);
+                map.put(str, strings);
             }
         }
         return new ArrayList<>(map.values());
