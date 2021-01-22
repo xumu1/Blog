@@ -46,6 +46,7 @@ class Solution {
         return res;
     }
 
+
     private void dfs(int[] nums, ArrayList<Integer> chain, int depth, boolean[] used, int len, ArrayList<List<Integer>> res) {
         if (len == depth) {
             res.add(new ArrayList<>(chain));
