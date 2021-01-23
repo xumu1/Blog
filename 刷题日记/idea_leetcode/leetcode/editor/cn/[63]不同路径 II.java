@@ -46,7 +46,49 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-
+        // 使用动态规划
+        // m 行 n 列
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        if(obstacleGrid[m-1][n-1] == 1){
+            return 0;
+        }
+        // 使用一个dp数组，每一个元素的含义是：到终点有多少种路径。
+        Integer[][] array = new Integer[m][n];
+        array[m - 1][n - 1] = 1;
+        // 处理最右侧列
+        for (int i = m - 2; i >= 0; i--) {
+            if (obstacleGrid[i][n - 1] == 1 || array[i + 1][n - 1] == 0) {
+                array[i][n - 1] = 0;
+            } else {
+                array[i][n - 1] = 1;
+            }
+        }
+        // 处理最后一行
+        for (int i = n - 2; i >= 0; i--) {
+            if (obstacleGrid[m - 1][i] == 1 || array[m - 1][i + 1] == 0) {
+                array[m - 1][i] = 0;
+            } else {
+                array[m - 1][i] = 1;
+            }
+        }
+        return dp(0, 0, array, obstacleGrid);
+    }
+    // 返回这个节点有多少路径到终点
+    public int dp(int i, int j, Integer[][] array, int[][] obstacleGrid) {
+//        if (i >= obstacleGrid.length || j >= obstacleGrid[0].length) {
+//            return 0;
+//        }
+        if (array[i][j] != null) {
+            return array[i][j];
+        }
+        if (obstacleGrid[i][j] == 1) {
+            array[i][j] = 0;
+            return 0;
+        } else {
+            array[i][j] = dp(i + 1, j, array, obstacleGrid) + dp(i, j + 1, array, obstacleGrid);
+            return array[i][j];
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
