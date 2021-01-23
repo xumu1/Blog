@@ -42,10 +42,31 @@
 // 👍 360 👎 0
 
 
+import java.util.HashSet;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public void setZeroes(int[][] matrix) {
-
+        // 方法 1 ： 用 m+n 长度的数组记录哪些行列变为0，最后统一处理。
+        HashSet<Integer> rowSet = new HashSet<>();
+        HashSet<Integer> colSet = new HashSet<>();
+        int m = matrix.length;
+        int n = matrix[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0){
+                    rowSet.add(i);
+                    colSet.add(j);
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if(rowSet.contains(i)||colSet.contains(j)){
+                    matrix[i][j] = 0;
+                }
+            }
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
