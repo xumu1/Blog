@@ -36,7 +36,27 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int minPathSum(int[][] grid) {
+        // 类似63题，同样使用dp数组
+        int m = grid.length;
+        int n = grid[0].length;
+        Integer[][] table = new Integer[m][n];
+        table[m - 1][n - 1] = grid[m - 1][n - 1];
+        // 处理边界
+        for (int i = m - 2; i >= 0; i--) {
+            table[i][n - 1] = grid[i][n - 1] + table[i + 1][n - 1];
+        }
+        for (int i = n - 2; i >= 0; i--) {
+            table[m - 1][i] = grid[m - 1][i] + table[m - 1][i + 1];
+        }
+        return dp(0, 0, table, grid);
+    }
 
+    public int dp(int i, int j, Integer[][] table, int[][] grid) {
+        if (table[i][j] != null) {
+            return table[i][j];
+        }
+        table[i][j] = Math.min(dp(i + 1, j, table, grid), dp(i, j + 1, table, grid)) + grid[i][j];
+        return table[i][j];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
