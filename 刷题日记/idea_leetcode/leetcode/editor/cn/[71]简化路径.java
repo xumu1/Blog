@@ -49,9 +49,27 @@
 // 👍 238 👎 0
 
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String simplifyPath(String path) {
+        // 使用栈（双向队列）
+        String[] split = path.split("/");
+        List<String> collect = Arrays.stream(split).filter((s1 -> !"".equals(s1))).collect(Collectors.toList());
+        ArrayList<String> res = new ArrayList<>();
+        for (String s : collect) {
+            if (s.equals("..")) {
+                if (res.size() > 0){
+                    res.remove(res.size() - 1);
+                }
+            } else if (!s.equals(".")) {
+                res.add(s);
+            }
+        }
+        return "/" + String.join("/", res);
+
 
     }
 }
