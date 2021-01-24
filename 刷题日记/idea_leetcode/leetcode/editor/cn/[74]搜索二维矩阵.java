@@ -38,7 +38,37 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-
+        // 1. 先找到在第几行
+        // 2. 在找在第几个
+        // 注：可以使用二分法提高效率
+        int m = matrix.length;
+        int n = matrix[0].length;
+        // 排除界外两种情况
+        if (matrix[0][0] > target) {
+            return false;
+        }
+        if (matrix[m - 1][n - 1] < target) {
+            return false;
+        }
+        int row = -1;
+        for (int i = 0; i < m; i++) {
+            if (i < m - 1 && matrix[i][0] <= target && matrix[i + 1][0] > target) {
+                row = i;
+                break;
+            }
+            if (i == m - 1 && matrix[i][0] <= target) {
+                row = i;
+                break;
+            }
+        }
+        System.out.println(row);
+        // 找到了第几行，找第几列
+        for (int i = 0; i < n; i++) {
+            if(matrix[row][i]==target){
+                return true;
+            }
+        }
+        return false;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
