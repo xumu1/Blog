@@ -61,7 +61,6 @@ class Solution {
                 break;
             }
         }
-        System.out.println(row);
         // 找到了第几行，找第几列
         for (int i = 0; i < n; i++) {
             if(matrix[row][i]==target){
