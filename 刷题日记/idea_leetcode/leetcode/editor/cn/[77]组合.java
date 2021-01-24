@@ -16,11 +16,31 @@
 // 👍 472 👎 0
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<Integer>> combine(int n, int k) {
+        // 使用回溯法
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        dfs(res, new ArrayList<Integer>(), n, k, 0, 1);
+        return res;
+    }
+
+    private void dfs(ArrayList<List<Integer>> res, ArrayList<Integer> chain, int n, int k, int deep, int index) {
+        if (deep == k) {
+            if (chain.size() == k) {
+                res.add(new ArrayList<>(chain));
+            }
+            return;
+        }
+        for (int i = index; i <= n; i++) {
+            chain.add(i);
+            dfs(res, chain, n, k, deep + 1, i + 1);
+            chain.remove(chain.size() - 1);
+        }
 
     }
 }
