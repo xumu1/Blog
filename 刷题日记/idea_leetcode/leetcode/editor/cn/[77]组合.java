@@ -31,9 +31,7 @@ class Solution {
 
     private void dfs(ArrayList<List<Integer>> res, ArrayList<Integer> chain, int n, int k, int deep, int index) {
         if (deep == k) {
-            if (chain.size() == k) {
-                res.add(new ArrayList<>(chain));
-            }
+            res.add(new ArrayList<>(chain));
             return;
         }
         for (int i = index; i <= n; i++) {
