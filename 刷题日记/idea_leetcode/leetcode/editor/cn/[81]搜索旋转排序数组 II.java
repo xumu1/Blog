@@ -25,10 +25,14 @@
 // 👍 271 👎 0
 
 
+import java.util.Arrays;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean search(int[] nums, int target) {
-
+        Arrays.sort(nums);
+        int i = Arrays.binarySearch(nums, target);
+        return i >= 0;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
