@@ -54,10 +54,52 @@
 // 👍 347 👎 0
 
 
+import java.util.Arrays;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int removeDuplicates(int[] nums) {
-
+        int tmp = nums[0] - 1;
+        int pre = nums[0];
+        int count = 1;
+        int len = nums.length;
+        for (int i = 1; i < len; i++) {
+            if (nums[i] == pre) {
+                if (count >= 2) {
+                    pre = nums[i];
+                    nums[i] = tmp;
+                }
+                count++;
+            } else {
+                pre = nums[i];
+                count = 1;
+            }
+        }
+        for (int i = 1; i < len; i++) {
+            if (nums[i] == tmp) {
+                int index = i;
+                while (index < len && nums[index] == tmp) {
+                    index++;
+                }
+                if (index==len){
+                    break;
+                }else {
+                    int x = nums[i];
+                    nums[i] = nums[index];
+                    nums[index] = x;
+                }
+            }
+        }
+        int res = len;
+        for (int i = len-1; i >=0 ; i--) {
+            if(nums[i]==tmp){
+                res--;
+            }else {
+                break;
+            }
+        }
+//        System.out.println(Arrays.toString(nums));
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
