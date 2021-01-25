@@ -30,9 +30,12 @@ import java.util.Arrays;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean search(int[] nums, int target) {
-        Arrays.sort(nums);
-        int i = Arrays.binarySearch(nums, target);
-        return i >= 0;
+        for (int num : nums) {
+            if (num == target){
+                return true;
+            }
+        }
+        return false;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
