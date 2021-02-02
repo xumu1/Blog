@@ -16,18 +16,55 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 /**
- * Definition for singly-linked list.*/
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode() {}
-    ListNode(int val) { this.val = val; }
-    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-}
+ * Definition for singly-linked list.
+ */
+//class ListNode {
+//    int val;
+//    ListNode next;
+//
+//    ListNode() {
+//    }
+//
+//    ListNode(int val) {
+//        this.val = val;
+//    }
+//
+//    ListNode(int val, ListNode next) {
+//        this.val = val;
+//        this.next = next;
+//    }
+//}
 
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-
+        if (head == null){
+            return null;
+        }
+        // 使用两个节点，pre 和 tmp
+        ListNode res = new ListNode(-1);
+        res.next = head;
+        ListNode ppre = res;
+        ListNode pre = head;
+        ListNode tmp = head.next;
+        while (tmp != null) {
+            if (tmp.val == pre.val) {
+                if (tmp.next != null && tmp.val == tmp.next.val) {
+                    tmp = tmp.next;
+                } else {
+                    pre = tmp.next;
+                    tmp = pre == null ? null : pre.next;
+                    ppre.next = pre;
+                }
+            } else {
+                tmp = tmp.next;
+                pre = pre.next;
+                ppre = ppre.next;
+            }
+        }
+        if(pre !=null){
+            ppre.next = pre;
+        }
+        return res.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
