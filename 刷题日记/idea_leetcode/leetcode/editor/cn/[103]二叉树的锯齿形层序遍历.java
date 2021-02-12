@@ -40,7 +40,6 @@ public class TreeNode {
 
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-
         // 使用间隔符
         LinkedList<Integer> array = new LinkedList<>();
         LinkedList<TreeNode> tmp1 = new LinkedList<>();
