@@ -1,3 +1,4 @@
+import javax.lang.model.element.VariableElement;
 import java.util.Arrays;
 
 /**
@@ -8,9 +9,14 @@ import java.util.Arrays;
  */
 public class testSort {
     public static void main(String[] args) {
-        String s = "cba";
+        String s = "c.ba";
         char[] chars = s.toCharArray();
         Arrays.sort(chars);
         System.out.println(chars);
+        String[] split = s.split(".");
+        System.out.println(split);
+        int[] a = new int[]{5,2,3};
+        System.out.println(1);
+
     }
 }
