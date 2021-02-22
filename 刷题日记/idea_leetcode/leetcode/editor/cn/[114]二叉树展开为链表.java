@@ -62,7 +62,31 @@
  */
 class Solution {
     public void flatten(TreeNode root) {
-
+        // 分治法
+        fun(root);
+    }
+    public TreeNode fun(TreeNode root){
+        if (root==null){
+            return null;
+        }
+        if (root.left==null&&root.right==null){
+            return root;
+        }
+        TreeNode l = fun(root.left);
+        TreeNode r = fun(root.right);
+        TreeNode right = root.right;
+        if (l==null){
+            return r;
+        }
+        if (r==null){
+            root.right = root.left;
+            root.left = null;
+            return l;
+        }
+        root.right = root.left;
+        root.left = null;
+        l.right = right;
+        return r;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
