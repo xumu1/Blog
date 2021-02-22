@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Description:
  * date: 2021-2-22
@@ -19,7 +23,12 @@ public class testString {
             // "A-B-C"
         }
         {
-
+            BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                String s = input.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
