@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.PriorityQueue;
 
 /**
  * Description:
@@ -29,6 +30,9 @@ public class testString {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        {
+            PriorityQueue<Integer> integers = new PriorityQueue<>();
         }
 
     }
