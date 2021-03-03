@@ -28,6 +28,8 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -41,7 +43,28 @@ import java.util.List;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        if (root==null){
+            return res;
+        }
+        queue.add(root);
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            ArrayList<Integer> item = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode pop = queue.pop();
+                item.add(pop.val);
+                if (pop.left!=null){
+                    queue.add(pop.left);
+                }
+                if (pop.right!=null){
+                    queue.add(pop.right);
+                }
+            }
+            res.add(item);
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
