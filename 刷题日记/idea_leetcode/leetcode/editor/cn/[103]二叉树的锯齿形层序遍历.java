@@ -43,45 +43,33 @@ public class TreeNode {
 
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        if (root == null){
-            return new ArrayList<>();
+        LinkedList<List<Integer>> res = new LinkedList<>();
+        if (root == null) {
+            return res;
         }
-        // 使用间隔符
-        LinkedList<Integer> array = new LinkedList<>();
-        LinkedList<TreeNode> tmp1 = new LinkedList<>();
-        tmp1.add(root);
-        while (tmp1.size() > 0) {
-            LinkedList<TreeNode> tmp2 = new LinkedList<>();
-            tmp1.forEach(item -> array.add(item.val));
-            array.add(null);
-            while (tmp1.size() > 0) {
-                TreeNode pop = tmp1.pop();
-                if (pop.left != null) {
-                    tmp2.add(pop.left);
+        LinkedList<Integer> tmp;
+        boolean isOrder = true;
+        LinkedList<TreeNode> quque = new LinkedList<>();
+        quque.offer(root);
+        while (quque.size() > 0) {
+            tmp = new LinkedList<Integer>();
+            int size = quque.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode poll = quque.poll();
+                if (isOrder) {
+                    tmp.offerLast(poll.val);
+                } else {
+                    tmp.offerFirst(poll.val);
                 }
-                if (pop.right != null) {
-                    tmp2.add(pop.right);
+                if (poll.left != null) {
+                    quque.add(poll.left);
+                }
+                if (poll.right != null) {
+                    quque.add(poll.right);
                 }
             }
-            tmp1 = tmp2;
-        }
-        List<List<Integer>> res = new ArrayList<>();
-        ArrayList<Integer> tmp = new ArrayList<>();
-        int tag = 1;
-        for (int i = 0; i < array.size(); i++) {
-            if (array.get(i) == null || i == array.size() - 1) {
-                if(tag==1){
-                    res.add(new ArrayList<>(tmp));
-                    tag = 0;
-                }else{
-                    Collections.reverse(tmp);
-                    res.add(new ArrayList<>(tmp));
-                    tag = 1;
-                }
-                tmp = new ArrayList<>();
-            } else {
-                tmp.add(array.get(i));
-            }
+            res.add(new LinkedList<>(tmp));
+            isOrder = !isOrder;
         }
         return res;
     }
