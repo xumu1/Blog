@@ -64,6 +64,7 @@ class Solution {
             cur = next;
         }
         return pre;
+        // 头尾方法
 //        ListNode tail = head;
 //        while (tail.next!=null){
 //            tail = tail.next;
