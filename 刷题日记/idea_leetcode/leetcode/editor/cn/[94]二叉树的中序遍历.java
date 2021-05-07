@@ -61,7 +61,8 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * Definition for a binary tree node. */
+ * Definition for a binary tree node.
+ */
 //public class TreeNode {
 //    int val;
 //    TreeNode left;
@@ -85,17 +86,17 @@ class Solution {
         // 2. 递推
         ArrayList<Integer> res = new ArrayList<>();
         LinkedList<TreeNode> stack = new LinkedList<>();
-        while (root!=null){
+        while (root != null) {
             stack.push(root);
             root = root.left;
         }
         // all left node into stack
-        while (!stack.isEmpty()){
+        while (!stack.isEmpty()) {
             TreeNode pop = stack.pop();
             res.add(pop.val);
-            if (pop.right!=null){
+            if (pop.right != null) {
                 TreeNode tmp = pop.right;
-                while (tmp!=null){
+                while (tmp != null) {
                     stack.push(tmp);
                     tmp = tmp.left;
                 }
