@@ -37,51 +37,36 @@ import java.util.List;
 
 class Solution {
     public ListNode reverseBetween(ListNode head, int m, int n) {
-        ListNode front = head;
-        ListNode end = head;
-        ListNode pre1 = null;
-        ListNode pre2 = null;
+        if (m == n) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode front = dummy;
+        int len = n - m + 1;
         while (m > 1) {
-            if (m == 2) {
-                pre1 = front;
-            }
             front = front.next;
             m--;
         }
-        while (n > 1) {
-            end = end.next;
-            n--;
-        }
-        pre2 = end.next;
-        reverse(front, end);
-        if (pre1 == null) {
-            front.next = pre2;
-            return end;
-        } else {
-            pre1.next = end;
-            front.next = pre2;
-            return head;
-        }
+        ListNode start = front.next;
+        front.next = reverse(start, len);
+        return dummy.next;
     }
 
-    private void reverse(ListNode front, ListNode end) {
-        if (front == end) {
-            return;
-        }
-        if (front.next == end) {
-            end.next = front;
-        }
-        end.next = null;
-        ListNode pre = front;
-        ListNode tmp = pre.next;
-        ListNode next = tmp.next;
-        while (next != null) {
-            tmp.next = pre;
-            pre = tmp;
-            tmp = next;
+    private ListNode reverse(ListNode start, int len) {
+        ListNode pre = null;
+        ListNode cur = start;
+        ListNode next = start.next;
+        while (len > 1) {
+            cur.next = pre;
+            len--;
+            pre = cur;
+            cur = next;
             next = next.next;
         }
-        tmp.next = pre;
+        cur.next = pre;
+        start.next = next;
+        return cur;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
