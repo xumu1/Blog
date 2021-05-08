@@ -43,57 +43,60 @@ class Solution {
      * @return
      */
     public static String move;
+    public static Integer x;
+    public static Integer y;
+
     public List<Integer> spiralOrder(int[][] matrix) {
-        int[] x = new int[]{0};
-        int[] y = new int[]{-1};
-        ArrayList<Integer> ans = new ArrayList<>();
+        x = 0;
+        y = -1;
         move = "right";
-        boolean result = cal(x, y, matrix.length, matrix[0].length, matrix);
+        ArrayList<Integer> ans = new ArrayList<>();
+        boolean result = cal(matrix.length, matrix[0].length, matrix);
         while (result) {
-            ans.add(matrix[x[0]][y[0]]);
-            matrix[x[0]][y[0]] = Integer.MIN_VALUE;
-            result = cal(x, y, matrix.length, matrix[0].length, matrix);
+            ans.add(matrix[x][y]);
+            matrix[x][y] = Integer.MIN_VALUE;
+            result = cal(matrix.length, matrix[0].length, matrix);
         }
         return ans;
     }
 
-    private boolean cal(int[] x, int[] y,  int xLength, int yLength, int[][] matrix) {
+    private boolean cal(int xLength, int yLength, int[][] matrix) {
         if ("right".equals(move)) {
-            if (y[0] + 1 < yLength && matrix[x[0]][y[0] + 1] != Integer.MIN_VALUE) {
-                y[0] = y[0] + 1;
+            if (y + 1 < yLength && matrix[x][y + 1] != Integer.MIN_VALUE) {
+                y = y + 1;
                 return true;
-            } else if (x[0] + 1 < xLength && matrix[x[0] + 1][y[0]] != Integer.MIN_VALUE) {
-                x[0] = x[0] + 1;
+            } else if (x + 1 < xLength && matrix[x + 1][y] != Integer.MIN_VALUE) {
+                x = x + 1;
                 move = "down";
                 return true;
             }
         }
         if ("left".equals(move)) {
-            if (y[0] - 1 >= 0 && matrix[x[0]][y[0] - 1] != Integer.MIN_VALUE) {
-                y[0] = y[0] - 1;
+            if (y - 1 >= 0 && matrix[x][y - 1] != Integer.MIN_VALUE) {
+                y = y - 1;
                 return true;
-            } else if (x[0] - 1 >= 0 && matrix[x[0] - 1][y[0]] != Integer.MIN_VALUE) {
-                x[0] = x[0] - 1;
+            } else if (x - 1 >= 0 && matrix[x - 1][y] != Integer.MIN_VALUE) {
+                x = x - 1;
                 move = "up";
                 return true;
             }
         }
         if ("up".equals(move)) {
-            if (x[0] - 1 >= 0 && matrix[x[0] - 1][y[0]] != Integer.MIN_VALUE) {
-                x[0] = x[0] - 1;
+            if (x - 1 >= 0 && matrix[x - 1][y] != Integer.MIN_VALUE) {
+                x = x - 1;
                 return true;
-            } else if (y[0] + 1 < yLength && matrix[x[0]][y[0] + 1] != Integer.MIN_VALUE) {
-                y[0] = y[0] + 1;
+            } else if (y + 1 < yLength && matrix[x][y + 1] != Integer.MIN_VALUE) {
+                y = y + 1;
                 move = "right";
                 return true;
             }
         }
         if ("down".equals(move)) {
-            if (x[0] + 1 < xLength && matrix[x[0] + 1][y[0]] != Integer.MIN_VALUE) {
-                x[0] = x[0] + 1;
+            if (x + 1 < xLength && matrix[x + 1][y] != Integer.MIN_VALUE) {
+                x = x + 1;
                 return true;
-            } else if (y[0] - 1 >= 0 && matrix[x[0]][y[0] - 1] != Integer.MIN_VALUE) {
-                y[0] = y[0] - 1;
+            } else if (y - 1 >= 0 && matrix[x][y - 1] != Integer.MIN_VALUE) {
+                y = y - 1;
                 move = "left";
                 return true;
             }
