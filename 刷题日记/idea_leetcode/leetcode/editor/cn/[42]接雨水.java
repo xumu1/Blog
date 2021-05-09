@@ -51,17 +51,7 @@ class Solution {
         }
         for (int i = 1; i < height.length - 1; i++) {
             int leftMax = leftMaxArray[i];
-//            for (int j = i - 1; j >= 0; j--) {
-//                if (height[j] > leftMax) {
-//                    leftMax = height[j];
-//                }
-//            }
             int rightMax = rightMaxArray[i];
-//            for (int j = i + 1; j < height.length; j++) {
-//                if (height[j] > rightMax) {
-//                    rightMax = height[j];
-//                }
-//            }
             int tmp = Math.min(leftMax, rightMax);
             if (tmp > height[i]) {
                 res = res + tmp - height[i];
