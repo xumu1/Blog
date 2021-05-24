@@ -64,6 +64,9 @@ import java.util.PriorityQueue;
 
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
+        /**
+         * 使用一个优先队列（堆），来存储多个链表，每次取值最小的节点，调整堆后循环。
+         */
         if (lists == null || lists.length == 0) {
             return null;
         }
