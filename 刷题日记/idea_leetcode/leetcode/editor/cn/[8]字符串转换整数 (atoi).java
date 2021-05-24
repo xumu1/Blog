@@ -114,9 +114,47 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int myAtoi(String s) {
-        int signIndex = -1;
-        int head = 0;
-        int end = s.length()-1;
+        //整体思路：
+        //1.设定flag，当遇到非数字时，flag=false，返回数值
+        //INT_MAX,INT_MIN作为判断条件
+        //每次将得到的数字*10，循环得到最终数值
+
+        //修剪字符串
+        char[] chars = s.trim().toCharArray();
+        if (chars.length == 0) {
+            return 0;
+        }
+        int total = 0;
+        int index = 0;
+        boolean flag = true;
+        int sign = 1;
+        int INT_MAX = Integer.MAX_VALUE;
+        int INT_MIN = Integer.MIN_VALUE;
+        if (chars[0] == '-') {
+            sign = -1;
+            index++;
+        }
+        if (chars[0] == '+') {
+            index++;
+        }
+        while (flag && index < chars.length) {
+            //非数字
+            if (!(chars[index] <= '9' && chars[index] >= '0')) {
+                flag = false;
+            } else {
+                //是数字
+                //过界
+                if ((total > INT_MAX / 10) || ((total == INT_MAX / 10) && ((chars[index] - '0') > INT_MAX % 10))) {
+                    return INT_MAX;
+                }
+                if ((total < INT_MIN / 10) || ((total == INT_MIN / 10) && ((chars[index] - '0') > -1 * (INT_MIN % 10)))) {
+                    return INT_MIN;
+                }
+                total = total * 10 + sign * (chars[index] - '0');
+                index++;
+            }
+        }
+        return total;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
