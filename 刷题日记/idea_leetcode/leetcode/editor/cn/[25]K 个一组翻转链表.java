@@ -82,8 +82,10 @@ class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
+        // end和pre：代表已经反转过的链表的结尾
         ListNode pre = dummy;
         ListNode end = dummy;
+        // 进入循环代表：还有元素需要反转
         while (end.next != null) {
             for (int i = 0; i < k && end != null; i++) {
                 end = end.next;
