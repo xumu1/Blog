@@ -46,45 +46,47 @@
 /**
  * Definition for a binary tree node.
  */
-public class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-
-    TreeNode() {
-    }
-
-    TreeNode(int val) {
-        this.val = val;
-    }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
+//public class TreeNode {
+//    int val;
+//    TreeNode left;
+//    TreeNode right;
+//
+//    TreeNode() {
+//    }
+//
+//    TreeNode(int val) {
+//        this.val = val;
+//    }
+//
+//    TreeNode(int val, TreeNode left, TreeNode right) {
+//        this.val = val;
+//        this.left = left;
+//        this.right = right;
+//    }
+//}
 
 class Solution {
     public boolean isBalanced(TreeNode root) {
-        if (fun1(root)==-1){
+        if (recursive(root) == -1) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
 
-    // 返回 -1 表示不符合
-    public int fun1(TreeNode root) {
+    /**
+     * 返回 node 深度，-1 表示不符合平衡条件
+     */
+    public int recursive(TreeNode root) {
         if (root == null) {
             return 0;
         }
-        int fun1 = fun1(root.left);
-        int fun11 = fun1(root.right);
-        if (fun1 == -1 || fun11 == -1 || Math.abs(fun1 - fun11) > 1) {
+        int left = recursive(root.left);
+        int right = recursive(root.right);
+        if (left == -1 || right == -1 || Math.abs(left - right) > 1) {
             return -1;
         }
-        return Math.max(fun1, fun11) + 1;
+        return Math.max(left, right) + 1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
