@@ -33,43 +33,44 @@ import java.util.List;
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
  * }
  */
 class Solution {
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
         ArrayList<List<Integer>> res = new ArrayList<>();
-        if (root == null){
+        if (root == null) {
             return res;
         }
-        dfs(root,targetSum,res,new ArrayList<Integer>());
+        dfs(root, targetSum, res, new ArrayList<Integer>());
         return res;
     }
-    public void dfs(TreeNode root, int targetSum, ArrayList<List<Integer>> res, ArrayList<Integer> chain){
-        if (root == null){
+
+    public void dfs(TreeNode root, int targetSum, ArrayList<List<Integer>> res, ArrayList<Integer> chain) {
+        if (root == null) {
             return;
         }
-        if (root.left==null&&root.right==null){
-            if (targetSum==root.val){
+        if (root.left == null && root.right == null) {
+            if (targetSum == root.val) {
                 chain.add(root.val);
                 res.add(new ArrayList<Integer>(chain));
-                chain.remove(chain.size()-1);
+                chain.remove(chain.size() - 1);
             }
             return;
         }
         chain.add(root.val);
-        dfs(root.left,targetSum-root.val,res,chain);
-        dfs(root.right,targetSum-root.val,res,chain);
-        chain.remove(chain.size()-1);
+        dfs(root.left, targetSum - root.val, res, chain);
+        dfs(root.right, targetSum - root.val, res, chain);
+        chain.remove(chain.size() - 1);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
