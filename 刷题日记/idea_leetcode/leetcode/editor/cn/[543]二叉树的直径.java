@@ -38,8 +38,23 @@
  * }
  */
 class Solution {
+    public static int res;
     public int diameterOfBinaryTree(TreeNode root) {
-
+        /**
+         * 递归求节点两边最长距离，相加和 res 比大小
+         */
+        res = 0;
+        recursion(root);
+        return res;
+    }
+    public int recursion(TreeNode root){
+        if (root == null){
+            return 0;
+        }
+        int l = recursion(root.left);
+        int r = recursion(root.right);
+        res = Math.max(res,l+r);
+        return Math.max(l,r)+1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
