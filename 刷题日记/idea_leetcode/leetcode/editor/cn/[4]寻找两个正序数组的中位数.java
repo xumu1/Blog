@@ -55,11 +55,42 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        /**
+         * O(m+n)的方法
+         */
         int m = nums1.length;
         int n = nums2.length;
         int left = (m + n + 1) / 2;
         int right = (m + n + 2) / 2;
         return (findKth(nums1, 0, nums2, 0, left) + findKth(nums1, 0, nums2, 0, right)) / 2.0;
+
+        /**
+         * O(n)的方法
+         */
+//        int sign = (m + n) % 2;
+//        if (sign == 1) {
+//            return find(nums1, nums2, (m + n + 1) / 2);
+//        } else {
+//            return (find(nums1, nums2, (m + n) / 2) + find(nums1, nums2, (m + n) / 2 + 1)) / 2;
+//        }
+    }
+
+    public double find(int[] nums1, int[] nums2, int i) {
+        int index1 = 0;
+        int index2 = 0;
+        double res = 0;
+        while (i > 0) {
+            if (index2 >= nums2.length || (index1 < nums1.length && nums1[index1] < nums2[index2])) {
+                res = nums1[index1];
+                index1++;
+                i--;
+            } else {
+                res = nums2[index2];
+                index2++;
+                i--;
+            }
+        }
+        return res;
     }
 
     //i: nums1的起始位置 j: nums2的起始位置
