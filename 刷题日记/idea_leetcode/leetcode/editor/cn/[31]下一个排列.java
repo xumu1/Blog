@@ -50,12 +50,13 @@ import java.util.Arrays;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    /*
+    /**
      *
      * 123456
      * 12346 5
      * 1235 46
      * 1236 45
+     * 1236 54
      * 124 356
      * 124 36 5
      * 124 5 36
