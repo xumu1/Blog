@@ -15,6 +15,7 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
 /**
  * Definition for singly-linked list.
  */
@@ -37,7 +38,7 @@
 
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        if (head == null){
+        if (head == null) {
             return null;
         }
         // 使用两个节点，pre 和 tmp
@@ -48,6 +49,7 @@ class Solution {
         ListNode tmp = head.next;
         while (tmp != null) {
             if (tmp.val == pre.val) {
+                // 找到最后一个重复的节点
                 if (tmp.next != null && tmp.val == tmp.next.val) {
                     tmp = tmp.next;
                 } else {
@@ -61,7 +63,7 @@ class Solution {
                 ppre = ppre.next;
             }
         }
-        if(pre !=null){
+        if (pre != null) {
             ppre.next = pre;
         }
         return res.next;
