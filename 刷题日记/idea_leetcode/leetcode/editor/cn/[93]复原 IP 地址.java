@@ -99,7 +99,6 @@ class Solution {
     public String buildString(ArrayList<Integer> list) {
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < 4; i++) {
-//            System.out.println("list.get(i) = " + list.get(i));
             buffer.append(list.get(i));
             if (i == 3) {
                 break;
