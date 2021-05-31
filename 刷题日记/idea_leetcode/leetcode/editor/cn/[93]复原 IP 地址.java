@@ -54,10 +54,59 @@
 // 👍 580 👎 0
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<>();
+        ArrayList<Integer> chain = new ArrayList<>();
+        dfs(res, s, chain, 0, 0);
+        return res;
+    }
 
+    public void dfs(List<String> res, String s, ArrayList<Integer> chain, int depth, int start) {
+        if (depth == 4) {
+            if (start == s.length()) {
+                res.add(buildString(chain));
+            }
+            return;
+        } else {
+            if (start >= s.length()) {
+                return;
+            }
+        }
+        if (s.charAt(start) == '0') {
+            chain.add(0);
+            dfs(res, s, chain, depth + 1, start + 1);
+            chain.remove(chain.size() - 1);
+        } else {
+            for (int i = 1; i <= 3 && start + i <= s.length(); i++) {
+                int item = Integer.parseInt(s.substring(start, start + i));
+                if (item > 255) {
+                    return;
+                }
+                chain.add(item);
+                dfs(res, s, chain, depth + 1, start + i);
+                chain.remove(chain.size() - 1);
+            }
+
+        }
+
+    }
+
+    public String buildString(ArrayList<Integer> list) {
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < 4; i++) {
+//            System.out.println("list.get(i) = " + list.get(i));
+            buffer.append(list.get(i));
+            if (i == 3) {
+                break;
+            }
+            buffer.append(".");
+        }
+        return buffer.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
