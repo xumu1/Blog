@@ -63,6 +63,10 @@ class Solution {
         nums[i] = nums[i1];
         nums[i1] = tmp;
     }
+
+    /**
+     * 空间复杂度高
+     */
 //    public int firstMissingPositive(int[] nums) {
 //        int len = nums.length;
 //        if (len==0){
