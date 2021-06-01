@@ -50,10 +50,9 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public static int[] array;
-    public static int len;
-    public static int tag;
-
+    private static int[] array;
+    private static int len;
+    private static int tag;
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         // 使用回溯法
