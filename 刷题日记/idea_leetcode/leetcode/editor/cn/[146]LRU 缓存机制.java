@@ -69,11 +69,11 @@ class LRUCache {
         map = new HashMap<Integer, ListNode>();
     }
 
-    public int capacity;
+    private int capacity;
 
-    public ListNodeQueue queue;
+    private ListNodeQueue queue;
 
-    public Map<Integer, ListNode> map;
+    private Map<Integer, ListNode> map;
 
     public int get(int key) {
         if (!map.containsKey(key)) {
