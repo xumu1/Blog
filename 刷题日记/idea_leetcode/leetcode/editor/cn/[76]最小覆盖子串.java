@@ -44,7 +44,12 @@ class Solution {
             need[t.charAt(i)]++;
         }
         //l是当前左边界，r是当前右边界，size记录窗口大小，count是需求的字符个数，start是最小覆盖串开始的index
-        int l = 0, r = 0, size = Integer.MAX_VALUE, count = t.length(), start = 0;
+        int l = 0;
+        int r = 0;
+        int size = Integer.MAX_VALUE;
+        int count = t.length();
+        int start = 0;
+
         while (r < s.length()) {
             char c = s.charAt(r);
             if (need[c] > 0) {
