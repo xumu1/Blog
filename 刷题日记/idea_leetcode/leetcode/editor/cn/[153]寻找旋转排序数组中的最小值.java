@@ -53,8 +53,24 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    /**
+     * 很明显要使用二分查找，
+     * 可以分为几种情况
+     */
     public int findMin(int[] nums) {
+        return binarySearch(nums, 0, nums.length - 1);
+    }
 
+    private int binarySearch(int[] nums, int start, int end) {
+        int mid = start + (end - start) / 2;
+        if (nums[start] <= nums[mid] && nums[mid] <= nums[end]) {
+            return nums[start];
+        }
+        if (nums[mid]>nums[end]){
+            return binarySearch(nums,mid+1,end);
+        }else{
+            return binarySearch(nums,start,mid);
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
