@@ -38,7 +38,18 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int fib(int n) {
-
+        if (n < 2){
+            return n;
+        }
+        int one = 0;
+        int two = 1;
+        int sum = 1;
+        for (int i = 2; i <= n; i++) {
+            sum = (one + two) % 1000000007;
+            one = two;
+            two = sum;
+        }
+        return sum;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

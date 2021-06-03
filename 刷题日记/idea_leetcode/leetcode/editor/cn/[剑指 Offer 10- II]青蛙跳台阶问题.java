@@ -35,7 +35,21 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int numWays(int n) {
-
+        if (n == 0) {
+            return 1;
+        }
+        if (n < 3) {
+            return n;
+        }
+        int one = 1;
+        int two = 2;
+        int three = 0;
+        for (int i = 3; i <= n; i++) {
+            three = (one + two) % 1000000007;
+            one = two;
+            two = three;
+        }
+        return three;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

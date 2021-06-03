@@ -22,8 +22,44 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    /**
+     * 使用两个指针 l  r
+     * l指向奇数，r指向偶数
+     * 当 l < r && l 是奇，r是偶，交换 l r，then l++，r++
+     *
+     * 方法2：
+     * 使用两个指针分别从左和右向中间紧逼，进行交换。
+     */
     public int[] exchange(int[] nums) {
+        int l = 0;
+        int r = 0;
+        // 找到第一个偶数
+        while (l < nums.length && nums[l] % 2 != 0) {
+            l++;
+            r++;
+        }
+        while (l < nums.length && r < nums.length) {
+            if (nums[r] % 2 == 0) {
+                r++;
+            } else {
+                swap(nums, l, r);
+                l++;
+                while (l < nums.length && nums[l] % 2 == 1) {
+                    l++;
+                }
+                r++;
+                while (r < nums.length && nums[r] % 2 == 0) {
+                    r++;
+                }
+            }
+        }
+        return nums;
+    }
 
+    private void swap(int[] nums, int a, int b) {
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
