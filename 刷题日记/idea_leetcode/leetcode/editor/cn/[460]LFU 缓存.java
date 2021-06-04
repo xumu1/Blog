@@ -72,14 +72,13 @@ class LFUCache {
     private HashMap<Integer, ListNode> map;
     private HashMap<Integer, DoubleLinkedList> frequentMap;
     private int capacity;
-    private int minFrequnt = 1;
+    private int minFrequent = 1;
 
     public LFUCache(int capacity) {
         this.map = new HashMap<>(capacity, 1);
         this.frequentMap = new HashMap<>();
         this.capacity = capacity;
     }
-
     public int get(int key) {
         if (!map.containsKey(key)) {
             return -1;
@@ -112,10 +111,10 @@ class LFUCache {
     }
 
     public void removeOldest() {
-        while (frequentMap.get(minFrequnt) == null || frequentMap.get(minFrequnt).count == 0) {
-            minFrequnt++;
+        while (frequentMap.get(minFrequent) == null || frequentMap.get(minFrequent).count == 0) {
+            minFrequent++;
         }
-        DoubleLinkedList list = frequentMap.get(minFrequnt);
+        DoubleLinkedList list = frequentMap.get(minFrequent);
         ListNode remove = list.tail.pre;
         remove.pre.next = list.tail;
         list.tail.pre = remove.pre;
@@ -157,7 +156,7 @@ class LFUCache {
         node.next.pre = node;
         node.pre = list.head;
         list.head.next = node;
-        minFrequnt = 1;
+        minFrequent = 1;
     }
 
     private int size() {
