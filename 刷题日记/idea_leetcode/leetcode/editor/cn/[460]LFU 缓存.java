@@ -64,19 +64,134 @@
 // 👍 391 👎 0
 
 
+import java.util.HashMap;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class LFUCache {
 
+    private HashMap<Integer, ListNode> map;
+    private HashMap<Integer, DoubleLinkedList> frequentMap;
+    private int capacity;
+    private int minFrequnt = 1;
+
     public LFUCache(int capacity) {
-
+        this.map = new HashMap<>(capacity, 1);
+        this.frequentMap = new HashMap<>();
+        this.capacity = capacity;
     }
-    
+
     public int get(int key) {
-
+        if (!map.containsKey(key)) {
+            return -1;
+        }
+        addFrequent(key);
+        return map.get(key).val;
     }
-    
-    public void put(int key, int value) {
 
+    public void put(int key, int value) {
+        if (capacity<=0){
+            return;
+        }
+        ListNode node = new ListNode(key, value);
+        if (map.containsKey(key)) {
+            editOldNode(node);
+        } else {
+            if (size() == capacity) {
+                removeOldest();
+            }
+            map.put(key, node);
+            addNewNode(node);
+        }
+    }
+
+    public void addFrequent(int key) {
+        ListNode node = map.get(key);
+        removeFrequentMapNode(node);
+        node.frequency++;
+        addFrequentMapNode(node);
+    }
+
+    public void removeOldest() {
+        while (frequentMap.get(minFrequnt) == null || frequentMap.get(minFrequnt).count == 0) {
+            minFrequnt++;
+        }
+        DoubleLinkedList list = frequentMap.get(minFrequnt);
+        ListNode remove = list.tail.pre;
+        remove.pre.next = list.tail;
+        list.tail.pre = remove.pre;
+        list.count--;
+        map.remove(remove.key);
+    }
+
+    public void editOldNode(ListNode node) {
+        ListNode oldNode = map.get(node.key);
+        oldNode.val = node.val;
+        addFrequent(node.key);
+    }
+
+    public void removeFrequentMapNode(ListNode node) {
+        node.pre.next = node.next;
+        node.next.pre = node.pre;
+        frequentMap.get(node.frequency).count--;
+    }
+
+    public void addFrequentMapNode(ListNode node) {
+        if (!frequentMap.containsKey(node.frequency)) {
+            frequentMap.put(node.frequency, new DoubleLinkedList());
+        }
+        DoubleLinkedList list = frequentMap.get(node.frequency);
+        list.count++;
+        node.next = list.head.next;
+        node.next.pre = node;
+        list.head.next = node;
+        node.pre = list.head;
+    }
+
+    public void addNewNode(ListNode node) {
+        if (!frequentMap.containsKey(1)) {
+            frequentMap.put(1, new DoubleLinkedList());
+        }
+        DoubleLinkedList list = frequentMap.get(1);
+        list.count++;
+        node.next = list.head.next;
+        node.next.pre = node;
+        node.pre = list.head;
+        list.head.next = node;
+        minFrequnt = 1;
+    }
+
+    private int size() {
+        return map.size();
+    }
+
+    class DoubleLinkedList {
+        ListNode head;
+        ListNode tail;
+        int count;
+
+        DoubleLinkedList() {
+            head = new ListNode(-1, -1);
+            tail = new ListNode(-1, -1);
+            head.next = tail;
+            tail.pre = head;
+            head.pre = null;
+            tail.next = null;
+            count = 0;
+        }
+    }
+
+    class ListNode {
+        int key;
+        int val;
+        int frequency;
+        ListNode pre;
+        ListNode next;
+
+        ListNode(int key, int val) {
+            this.key = key;
+            this.val = val;
+            this.frequency = 1;
+        }
     }
 }
 
