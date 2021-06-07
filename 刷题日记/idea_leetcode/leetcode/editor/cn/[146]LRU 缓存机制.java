@@ -70,9 +70,7 @@ class LRUCache {
     }
 
     private int capacity;
-
     private ListNodeQueue queue;
-
     private Map<Integer, ListNode> map;
 
     public int get(int key) {
