@@ -42,19 +42,54 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
+    /**
+     * 按 k个节点 反转链表的年轻版
+     * pre start end tail
+     *
+     * @param head
+     * @return
+     */
     public ListNode swapPairs(ListNode head) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode pre = dummy;
+        while (true) {
+            ListNode start = pre.next;
+            if (start == null || start.next == null) {
+                break;
+            }
+            ListNode end = start.next;
+            ListNode tail = end.next;
+            end.next = null;
+            reverse(start);
+            pre.next = end;
+            start.next = tail;
+            pre = start;
+        }
+        return dummy.next;
+    }
 
+    private void reverse(ListNode start) {
+        ListNode pre = null;
+        ListNode cur = start;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
