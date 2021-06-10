@@ -19,34 +19,22 @@ import java.util.Arrays;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String addStrings(String num1, String num2) {
-        int res = 0;
         StringBuffer buf = new StringBuffer();
-        char[] shortChars = num1.length() > num2.length() ? num2.toCharArray() : num1.toCharArray();
-        char[] longChars = num1.length() > num2.length() ? num1.toCharArray() : num2.toCharArray();
-        int shortIndex = shortChars.length - 1;
-        int longIndex = longChars.length - 1;
-//        System.out.println("shortChars = " + Arrays.toString(shortChars));
-//        System.out.println("longChars = " + Arrays.toString(longChars));
-        while (shortIndex >= 0) {
-            int tmp = shortChars[shortIndex] + longChars[longIndex] - '0' - '0' + res;
-            res = tmp / 10;
-            buf.append(tmp % 10);
-            shortIndex--;
-            longIndex--;
+        int index1 = num1.length() - 1;
+        int index2 = num2.length() - 1;
+        int carry = 0;
+        while (index1 >= 0 || index2 >= 0) {
+            int i1 = index1 >= 0 ? num1.charAt(index1) - '0' : 0;
+            int i2 = index2 >= 0 ? num2.charAt(index2) - '0' : 0;
+            buf.append((i1 + i2 + carry) % 10);
+            carry = (i1 + i2 + carry) / 10;
+            index1--;
+            index2--;
         }
-        while (longIndex >= 0) {
-            int tmp = longChars[longIndex] - '0' + res;
-            res = tmp / 10;
-            buf.append(tmp % 10);
-            longIndex--;
+        if (carry == 1) {
+            buf.append("1");
         }
-        if (res != 0){
-            buf.append(res);
-        }
-//        System.out.println("buf.toString() = " + buf.toString());
         return buf.reverse().toString();
-
-
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
