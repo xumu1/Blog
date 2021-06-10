@@ -25,15 +25,12 @@ class Solution {
     public static List<String> res;
 
     public List<String> generateParenthesis(int n) {
-        int l = 0;
-        int r = 0;
-        String link = "";
         res = new ArrayList<>();
-        recv(link, l, r, n);
+        recursion("", 0, 0, n);
         return res;
     }
 
-    public void recv(String link, int l, int r, int len) {
+    public void recursion(String link, int l, int r, int len) {
         if (l > len || r > len || r > l) {
             return;
         }
@@ -41,8 +38,8 @@ class Solution {
             res.add(link);
             return;
         }
-        recv(link + "(", l + 1, r, len);
-        recv(link + ")", l, r + 1, len);
+        recursion(link + "(", l + 1, r, len);
+        recursion(link + ")", l, r + 1, len);
 
     }
 }
