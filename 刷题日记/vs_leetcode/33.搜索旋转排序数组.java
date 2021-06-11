@@ -5,7 +5,9 @@
  */
 
 // @lc code=start
-class Solution {
+{
+    class Solution {
+}
     public int search(int[] nums, int target) {
         if (nums.length == 1 && nums[0] == target)
             return 0;
