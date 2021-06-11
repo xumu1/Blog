@@ -24,19 +24,42 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
-    public ListNode oddEvenList(ListNode head) {
+    private final boolean ODD_SIGN = true;
+    private final boolean EVEN_SIGN = false;
 
+    public ListNode oddEvenList(ListNode head) {
+        ListNode odd = new ListNode(-1);
+        ListNode oddTmp = odd;
+        ListNode even = new ListNode(-1);
+        ListNode evenTmp = even;
+        boolean sign = ODD_SIGN;
+        ListNode cur = head;
+        while (cur != null) {
+            if (sign) {
+                oddTmp.next = cur;
+                oddTmp = oddTmp.next;
+            }else{
+                evenTmp.next = cur;
+                evenTmp = evenTmp.next;
+            }
+            sign = !sign;
+            cur = cur.next;
+        }
+        evenTmp.next = null;
+        oddTmp.next = even.next;
+        return odd.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
