@@ -32,24 +32,73 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public void recoverTree(TreeNode root) {
 
+public class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {
+    }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    private TreeNode one;
+    private TreeNode two;
+    private Integer tmp;
+
+    public void recoverTree(TreeNode root) {
+        one = null;
+        two = null;
+        recursion(root);
+        System.out.println(1);
+        one.val = two.val;
+        System.out.println(2);
+        two.val = tmp;
+    }
+
+    private void recursion(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        if (root.left == null && root.right == null) {
+            return;
+        }
+        recursion(root.left);
+        if (root.left != null && root.left.val > root.val) {
+            if (one == null) {
+                one = root.left;
+                tmp = one.val;
+                one.val = Integer.MIN_VALUE;
+                System.out.println("one = " + one.val);
+            } else {
+                two = root;
+                System.out.println("two = " + two.val);
+            }
+
+        }
+        if (root.right != null && root.right.val < root.val) {
+            if (one == null) {
+                one = root;
+                tmp = one.val;
+                one.val = Integer.MIN_VALUE;
+                System.out.println("one = " + one.val);
+            } else {
+                two = root.right;
+                System.out.println("two = " + two.val);
+            }
+        }
+        recursion(root.right);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
