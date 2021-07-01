@@ -33,6 +33,9 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class TreeNode {
     int val;
     TreeNode left;
@@ -53,52 +56,35 @@ public class TreeNode {
 }
 
 class Solution {
-    private TreeNode one;
-    private TreeNode two;
-    private Integer tmp;
-
     public void recoverTree(TreeNode root) {
-        one = null;
-        two = null;
-        recursion(root);
-        System.out.println(1);
-        one.val = two.val;
-        System.out.println(2);
-        two.val = tmp;
+        Deque<TreeNode> stack = new ArrayDeque<TreeNode>();
+        TreeNode x = null, y = null, pred = null;
+
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (pred != null && root.val < pred.val) {
+                y = root;
+                if (x == null) {
+                    x = pred;
+                } else {
+                    break;
+                }
+            }
+            pred = root;
+            root = root.right;
+        }
+
+        swap(x, y);
     }
 
-    private void recursion(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        if (root.left == null && root.right == null) {
-            return;
-        }
-        recursion(root.left);
-        if (root.left != null && root.left.val > root.val) {
-            if (one == null) {
-                one = root.left;
-                tmp = one.val;
-                one.val = Integer.MIN_VALUE;
-                System.out.println("one = " + one.val);
-            } else {
-                two = root;
-                System.out.println("two = " + two.val);
-            }
-
-        }
-        if (root.right != null && root.right.val < root.val) {
-            if (one == null) {
-                one = root;
-                tmp = one.val;
-                one.val = Integer.MIN_VALUE;
-                System.out.println("one = " + one.val);
-            } else {
-                two = root.right;
-                System.out.println("two = " + two.val);
-            }
-        }
-        recursion(root.right);
+    public void swap(TreeNode x, TreeNode y) {
+        int tmp = x.val;
+        x.val = y.val;
+        y.val = tmp;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
