@@ -71,6 +71,8 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
+import java.util.LinkedList;
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -94,7 +96,57 @@ class Solution {
      * @return
      */
     public int widthOfBinaryTree(TreeNode root) {
-        return 0;
+        if (root == null) {
+            return 0;
+        }
+        Node node = new Node(1, root, null, null);
+        link(node);
+        LinkedList<Node> list = new LinkedList<>();
+        list.addLast(node);
+        int res = 0;
+        while (!list.isEmpty()) {
+            res = Math.max(res, list.getLast().number - list.getFirst().number + 1);
+            int size = list.size();
+            for (int i = 0; i < size; i++) {
+                Node first = list.pollFirst();
+                if (first.left != null) {
+                    list.addLast(first.left);
+                }
+                if (first.right != null) {
+                    list.addLast(first.right);
+                }
+            }
+        }
+        return res;
+    }
+
+    private void link(Node root) {
+        if (root == null) {
+            return;
+        }
+        if (root.node.left != null) {
+            root.left = new Node(root.number * 2, root.node.left, null, null);
+        }
+        if (root.node.right != null) {
+            root.right = new Node(root.number * 2 + 1, root.node.right, null, null);
+        }
+        link(root.left);
+        link(root.right);
+    }
+
+}
+
+class Node {
+    int number;
+    TreeNode node;
+    Node left;
+    Node right;
+
+    public Node(int number, TreeNode node, Node left, Node right) {
+        this.number = number;
+        this.node = node;
+        this.left = left;
+        this.right = right;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
