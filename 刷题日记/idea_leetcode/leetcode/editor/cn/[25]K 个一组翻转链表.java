@@ -79,6 +79,7 @@ public class ListNode {
 }
 
 class Solution {
+    // pre start end next
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
@@ -101,7 +102,7 @@ class Solution {
             start.next = next;
             pre.next = end;
             end = start;
-            pre = end;
+            pre = start;
         }
         return dummy.next;
     }

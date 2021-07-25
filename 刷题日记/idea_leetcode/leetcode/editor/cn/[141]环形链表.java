@@ -70,17 +70,17 @@ public class Solution {
         if (head == null){
             return  false;
         }
-        ListNode fast = head.next;
+        ListNode fast = head;
         ListNode slow = head;
+        boolean tag = false;
         while (fast != null){
-            if (fast == slow || fast.next == slow){
+            if (fast == slow && tag == true){
                 return true;
             }
+            tag = true;
             fast = fast.next;
-            if (fast == null){
-                return false;
-            }else {
-                slow = slow.next;
+            slow = slow.next;
+            if (fast != null){
                 fast = fast.next;
             }
         }
