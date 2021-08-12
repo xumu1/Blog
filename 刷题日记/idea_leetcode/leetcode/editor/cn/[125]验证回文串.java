@@ -35,7 +35,25 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isPalindrome(String s) {
-
+        StringBuilder builder = new StringBuilder();
+        for (char c : s.toLowerCase().toCharArray()) {
+            if (Character.isAlphabetic(c) || Character.isDigit(c)){
+                builder.append(c);
+            }
+        }
+        if (builder.length() == 0){
+            return true;
+        }
+        char[] chars = builder.toString().toCharArray();
+        int l = 0,r = chars.length-1;
+        while(l<r){
+            if (chars[l] != chars[r]){
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
